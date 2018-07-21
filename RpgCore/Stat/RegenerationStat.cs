@@ -12,17 +12,5 @@ namespace RpgCore.Stats
             this.MaxValue = maxValue;
         }
 
-        public void ApplyInstantEffect(float value)
-        {
-            if(value + GetBaseValue() < MaxValue)
-            {
-                ChangeBaseValue(value);
-            }
-            else{
-                this.Value = MaxValue;
-            }
-            
-            
-        }
     }
 }

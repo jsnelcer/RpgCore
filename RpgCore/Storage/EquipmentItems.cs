@@ -1,24 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RpgCore.Enum;
+using RpgCore.Inteface;
 using RpgCore.Items;
 
 namespace RpgCore.Storaged
 {
     public sealed class EquipmentItems : Storage<Equipment>
     {
-        //private static EquipmentItems instance = null;
+       
 
-        public EquipmentItems() // Instance
+        public EquipmentItems() 
         {
-            //get
-            //{
-            //    if (instance == null)
-            //    {
-            //        instance = new EquipmentItems();
-            //    }
-            //    return instance;
-            //}
         }
 
         public override void AddItem(Equipment item)
@@ -31,13 +25,16 @@ namespace RpgCore.Storaged
             {
                 base.AddItem(item);
             }
-            // TODO
-            // change equip
         }
 
         public Equipment GetItemFromSlot(EquipSlot slot)
         {
             return items.Select(x => x).Where(x => x.Slot == slot).FirstOrDefault();
+        }
+
+        internal void ApplyEffect(IEffect<Equipment> effect)
+        {
+            throw new NotImplementedException();
         }
     }
 }

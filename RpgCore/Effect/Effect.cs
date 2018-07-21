@@ -1,9 +1,11 @@
-﻿using System;
+﻿using RpgCore.Stats;
+using RpgCore.Inteface;
 using RpgCore.Enum;
+using RpgCore.Items;
 
 namespace RpgCore
 {
-    public class Effect
+    public abstract class Effect : IEffect<Stat>, IEffect<Equipment>
     {
         public EffectTarget Target { get; private set; }
         public StatType TargetStat { get; private set; }
@@ -15,10 +17,19 @@ namespace RpgCore
             this.TargetStat = targetStat;
             this.Value = value;
         }
+        
+        internal void IncreastValue(float value) => Value += value;
 
-        internal void IncreastValue(float value)
+        public void ApplyEffect(Stat target) => target.AddModifier(this);
+
+        public StatType GetTargetStat()
         {
-            Value += value;
+            return TargetStat;
+        }
+
+        public void ApplyEffect(Equipment target)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

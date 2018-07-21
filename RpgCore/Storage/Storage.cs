@@ -6,7 +6,7 @@ namespace RpgCore.Storaged
 {
     public abstract class Storage<T> : IStorage<T>
     {
-        protected static List<T> items;
+        public static List<T> items { protected set; get; }
         
         public virtual void AddItem(T item)
         {

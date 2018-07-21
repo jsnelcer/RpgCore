@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using RpgCore.Stats;
 using RpgCore.Enum;
 
 namespace RpgCore.Items
@@ -10,16 +8,12 @@ namespace RpgCore.Items
     {
         public EquipSlot Slot { get; private set; }
         private List<EquipEffect> EquipEffects { get; set; }
-        //private List<Effect> Effects { get; set; }
-        //private List<Stat> RecomendetAtribute { get; set; } 
 
         public Equipment(int id, string name, string description, EquipSlot slot)
             :base(id, name, description)
         {
             this.Slot = slot;
             EquipEffects = new List<EquipEffect>();
-            //Effects = new List<Effect>();
-            //RecomendetAtribute = new List<Stat>();
         }
 
         public void AddEquipEffect(EquipEffect effect)
@@ -50,36 +44,5 @@ namespace RpgCore.Items
                 return null;
             }
         }
-
-        /*
-        public void AddEffect(Effect effect)
-        {
-            if (!Effects.Exists(x => x.TargetStat == effect.TargetStat))
-            {
-                Effects.Add(effect);
-            }
-            else
-            {
-                Effects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(effect.Value);
-            }
-        }
-
-        public void RemoveEffect(Effect effect)
-        {
-            Effects.Remove(effect);
-        }
-
-        public List<Effect> GetEffects()
-        {
-            if (Effects.Any())
-            {
-                return Effects;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        */
     }
 }
