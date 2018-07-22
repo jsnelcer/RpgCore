@@ -27,5 +27,20 @@ namespace RpgCore.Items
             
             return result;
         }
+
+        public static Item CreateItem(ItemType type, int id, string name, string description)
+        {
+            switch (type)
+            {
+                case ItemType.Equip:
+                    return new Equipment(id, name, description);
+                case ItemType.Consumable:
+                    return new ConsumableItem(id, name, description);
+                case ItemType.Resources:
+                    return new Resources(id, name, description);
+                default:
+                    return null;
+            }
+        }
     }
 }

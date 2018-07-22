@@ -5,7 +5,7 @@ using RpgCore.Items;
 
 namespace RpgCore
 {
-    public abstract class Effect : IEffect<Stat>, IEffect<Equipment>
+    public class Effect : IEffect<Stat>, IEffect<Equipment>
     {
         public EffectTarget Target { get; private set; }
         public StatType TargetStat { get; private set; }

@@ -30,7 +30,9 @@ namespace RpgCore
 
             ConsumableItem healthPotion = new ConsumableItem(99, "Health of Potion", "Get 40hp", effect);
             Equipment helm = new Equipment(999, "helm of fire", "fireeee", EquipSlot.Head);
-            helm.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +30f));
+            EquipEffect eff = new EquipEffect(EffectTarget.Character, StatType.Health, +30f);
+            helm.AddEquipEffect(eff);
+            helm.RemoveEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +30f));
             Equipment helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
             helm_air.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +80f));
 

@@ -7,13 +7,27 @@ namespace RpgCore.Items
     public class Equipment : Item
     {
         public EquipSlot Slot { get; private set; }
-        private List<EquipEffect> EquipEffects { get; set; }
+        public List<EquipEffect> EquipEffects { get; private set; }
 
         public Equipment(int id, string name, string description, EquipSlot slot)
             :base(id, name, description)
         {
             this.Slot = slot;
             EquipEffects = new List<EquipEffect>();
+        }
+
+        internal Equipment(int id, string name, string description)
+            : base(id, name, description)
+        {
+            EquipEffects = new List<EquipEffect>();
+        }
+
+        public void SetSlot(EquipSlot slot)
+        {
+            if (Slot == 0)
+            {
+                this.Slot = slot;
+            }
         }
 
         public void AddEquipEffect(EquipEffect effect)
@@ -30,19 +44,8 @@ namespace RpgCore.Items
 
         public void RemoveEquipEffect(EquipEffect effect)
         {
-            EquipEffects.Remove(effect);
-        }
-
-        public List<EquipEffect> GetEquipEffects()
-        {
-            if (EquipEffects.Any())
-            {
-                return EquipEffects;
-            }
-            else
-            {
-                return null;
-            }
+            EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
+            EquipEffects.RemoveAll(x => x.Value == 0);
         }
     }
 }

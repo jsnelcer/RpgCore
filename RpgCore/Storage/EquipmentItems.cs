@@ -17,11 +17,11 @@ namespace RpgCore.Storaged
 
         public override void AddItem(Equipment item)
         {
-            if(items == null)
+            if(Items == null)
             {
                 base.AddItem(item);
             }
-            else if (!items.Exists(x => x.Slot == item.Slot))
+            else if (!Items.Exists(x => x.Slot == item.Slot))
             {
                 base.AddItem(item);
             }
@@ -29,7 +29,7 @@ namespace RpgCore.Storaged
 
         public Equipment GetItemFromSlot(EquipSlot slot)
         {
-            return items.Select(x => x).Where(x => x.Slot == slot).FirstOrDefault();
+            return Items.Select(x => x).Where(x => x.Slot == slot).FirstOrDefault();
         }
 
         internal void ApplyEffect(IEffect<Equipment> effect)

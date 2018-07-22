@@ -11,9 +11,9 @@ namespace RpgCore
 {
     public class Player : Character
     {
-        public static Inventory Inventory { get; private set; }
-        public static QuickUse QuickUse { get; private set; }
-        public static EquipmentItems Equip { get; private set; }
+        public Inventory Inventory { get; private set; }
+        public QuickUse QuickUse { get; private set; }
+        public EquipmentItems Equip { get; private set; }
 
         private StatsManager statsManager;
 

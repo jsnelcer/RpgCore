@@ -58,7 +58,7 @@ namespace RpgCore
                 stat.RemoveEquipModifier();
                 equip.ForEach(x =>
                 {
-                    var mod = x.GetEquipEffects().Where(y => y.TargetStat == stat.Type).FirstOrDefault();
+                    var mod = x.EquipEffects.Where(y => y.TargetStat == stat.Type).FirstOrDefault();
                     if (mod != null)
                     {
                         stat.AddModifier(mod);
