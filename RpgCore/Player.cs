@@ -5,51 +5,87 @@ using RpgCore.Storaged;
 using RpgCore.Stats;
 using RpgCore.Items;
 using RpgCore.Enum;
+using RpgCore.Inteface;
 
 namespace RpgCore
 {
     public class Player : Character
     {
-        private StorageManager storageManager = StorageManager.Instance;
-        private StatsManager statsManager;
+        public Inventory Inventory { get; private set; }
+        public QuickUse QuickUse { get; private set; }
+        public EquipmentItems Equip { get; private set; }
+
+        private StatsManager StatsManager;
+
+
+        public delegate void EquipChangeEvent();
+        public static event EquipChangeEvent EquipChange;
 
         public Player(string name, string description, List<Stat> baseStats)
             :base(name, description)
         {
-            statsManager = new StatsManager(baseStats);
-            storageManager.EquipChange += statsManager.EquipStats;
+            StatsManager = new StatsManager(baseStats);
+
+            Inventory = new Inventory();
+            QuickUse = new QuickUse();
+            Equip = new EquipmentItems();
+
+            EquipChange += UpdateStatsFromEquip;
         }
 
-        public void UseItem(IUseable item) => AddEffect(item.Use());
+        private void UpdateStatsFromEquip() => StatsManager.EquipStats(Equip.GetItems());
 
-        public void PickUp(Item item)
+        public void UseItem(IUseable item)
         {
-            storageManager.Add2Inventory(item);
+            Effect eff = item.Use();
         }
-
-        public void Equip(Equipment item)
-        {
-            storageManager.FromInventory2Equip(item);
-        }
-
+        
         public void Interact(IInteractable item) => item.Interact();
 
-        public void AddEffect(Effect effect)
+        public void PickUp(Item item) => Inventory.AddItem(item);
+
+        public void EquipItem(Equipment item)
         {
-            if(effect.Target == EffectTarget.Character)
+            try
             {
-                statsManager.ApplyEffect(effect);    
+                Inventory.RemoveItem(item);
+                if (Equip.GetItems().Any(x => x.Slot == item.Slot))
+                {
+                    Equipment change = Equip.GetItemFromSlot(item.Slot);
+                    FromEquipToInventory(change);
+                }
+
+                Equip.AddItem(item);
+                if (EquipChange != null)
+                {
+                    EquipChange.Invoke();
+                }
             }
-            else
+            catch (Exception e)
             {
-                storageManager.ApplyEffect(effect);
+                throw (e);
             }
-        } 
-        public void Update()
-        {
-            statsManager.UpdateStats();
         }
 
-        public Stat GetStat(StatType type) => statsManager.GetStat(type);
+        public void FromEquipToInventory(Equipment item)
+        {
+            try
+            {
+                Equip.RemoveItem(item);
+            }
+            catch (Exception e)
+            {
+                throw (e);
+            }
+            Inventory.AddItem(item);
+        }
+        
+        public void AddEffect(IEffect<StatsManager> effect) =>  StatsManager.ApplyEffect(effect);
+
+        public void AddEffect(IEffect<EquipmentItems> effect) => Equip.ApplyEffect(effect);
+
+        public void Update() => StatsManager.UpdateStats();
+
+        public Stat GetStat(StatType type) => StatsManager.GetStat(type);
     }
 }

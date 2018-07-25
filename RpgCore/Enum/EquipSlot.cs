@@ -2,6 +2,8 @@
 {
     public enum EquipSlot
     {
+        NaN,
+
         Head,
         Chest,
         Legs,

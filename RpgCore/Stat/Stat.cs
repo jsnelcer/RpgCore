@@ -14,9 +14,14 @@ namespace RpgCore.Stats
             Modifiers = new List<Effect>();
         }
 
-        public void ChangeBaseValue(float value)
+        public virtual void ChangeBaseValue(float value)
         {
             this.Value += value;
+        }
+
+        public virtual void ChangeBaseValue(Effect value)
+        {
+            AddModifier(value);
         }
 
         public void AddModifier(Effect value)
@@ -27,6 +32,11 @@ namespace RpgCore.Stats
         public void RemoveModifier(Effect value)
         {
             Modifiers.Remove(value);
+        }
+
+        public void RemoveAllModifier(Effect value)
+        {
+            Modifiers.RemoveAll(x => x == value);
         }
 
         public override float GetValue()

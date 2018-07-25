@@ -7,18 +7,9 @@ namespace RpgCore.Storaged
 {
     public sealed class QuickUse : Storage<ConsumableItem>
     {
-        //private static QuickUse instance = null;
 
-        public QuickUse() // Instance
+        public QuickUse()
         {
-            //get
-            //{
-            //    if (instance == null)
-            //    {
-            //        instance = new QuickUse();
-            //    }
-            //    return instance;
-            //}
         }
     }
 }

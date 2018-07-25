@@ -20,28 +20,34 @@ namespace RpgCore
                 new Stat(30f, StatType.Intelligence),
                 new Stat(50f, StatType.Luck)
             };
-            
+
             Player hero = new Player("Kazisvet III.", "z Bozi vule král", stats);
 
             Console.WriteLine(hero.ToString());
             Effect dmg = new TimeEffect(EffectTarget.Character, StatType.Health, -5f, 5);
             Effect effect = new InstantEffect(EffectTarget.Character, StatType.Health, +40f);
             Effect InstaDmg = new InstantEffect(EffectTarget.Character, StatType.Health, -85f);
-            
-            IUseable healthPotion = new ConsumableItem(99, "Health of Potion", "Get 40hp", effect);
+
+            ConsumableItem healthPotion = new ConsumableItem(99, "Health of Potion", "Get 40hp", effect);
             Equipment helm = new Equipment(999, "helm of fire", "fireeee", EquipSlot.Head);
-            helm.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +30f));
+            EquipEffect eff = new EquipEffect(EffectTarget.Character, StatType.Health, +30f);
+            helm.AddEquipEffect(eff);
+            helm.RemoveEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +30f));
             Equipment helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
             helm_air.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +80f));
 
-            hero.PickUp(helm);
-            hero.PickUp(helm_air);
+            hero.PickUp(healthPotion);
 
+            hero.PickUp(helm);
+            hero.EquipItem(helm);
             Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Equip(helm);
+            hero.PickUp(helm_air);
+            hero.EquipItem(helm_air);
             Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Equip(helm_air);
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
+
+
+
+            Console.ReadLine();
 
         }
     }
