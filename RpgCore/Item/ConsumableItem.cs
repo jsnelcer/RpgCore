@@ -1,29 +1,19 @@
 using RpgCore;
-using RpgCore.Enum;
 
 namespace RpgCore.Items
 {
     public class ConsumableItem : Item, IUseable
     {
-        public Effect Effect { private set; get; }
-        public ConsumableItem(int id, string name, string description, Effect value)
+        private Effect Effect;
+        public ConsumableItem(int id, string name, string description, Effect effect)
             :base(id, name ,description)
         {
-            this.Effect = value;
+            this.Effect = effect;
         }
 
-        internal ConsumableItem(int id, string name, string description)
-                : base(id, name, description)
+        public Effect GetEffect()
         {
-           
-        }
-
-        public void SetEffect(Effect value)
-        {
-            if(Effect == null)
-            {
-                this.Effect = value;
-            }
+            return Effect;
         }
 
         public Effect Use()
