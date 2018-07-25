@@ -47,27 +47,6 @@ namespace RpgCore
 
 
 
-            hero.AddEffect(InstaDmg);
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.UseItem(healthPotion);
-
-
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.AddEffect(dmg);
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Update();
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Update();
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Update();
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Update();
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Update();
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.Update();
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-
             Console.ReadLine();
 
         }

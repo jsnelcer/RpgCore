@@ -39,20 +39,28 @@ namespace RpgCore
         {
             if(DurationEffect.Any())
             {
+
                 DurationEffect.ForEach(effect =>
                 {
-                    Stats.Find(x => x.Type == effect.TargetStat && effect.Stack > 0).ChangeBaseValue(effect.Value);
+                    if (effect.Stack > 0)
+                    {
+                        Stats.Find(x => x.Type == effect.TargetStat).ChangeBaseValue(effect);
+                    }
                     effect.Used();
                 });
 
-                DurationEffect.RemoveAll(x => x.Stack <= 0);
+                DurationEffect.ForEach(effect =>
+                {
+                    if (effect.Stack < 0)
+                    {
+                        Stats.Find(x => x.Type == effect.TargetStat).RemoveAllModifier(effect);
+                    }
+                });
             }
         }
 
         public void EquipStats(List<Equipment> equip)
         {
-            Console.WriteLine("invoke event");
-            
             Stats.ForEach(stat =>
             {
                 stat.RemoveEquipModifier();

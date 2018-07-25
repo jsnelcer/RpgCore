@@ -15,7 +15,7 @@ namespace RpgCore
         public QuickUse QuickUse { get; private set; }
         public EquipmentItems Equip { get; private set; }
 
-        private StatsManager statsManager;
+        private StatsManager StatsManager;
 
 
         public delegate void EquipChangeEvent();
@@ -24,7 +24,7 @@ namespace RpgCore
         public Player(string name, string description, List<Stat> baseStats)
             :base(name, description)
         {
-            statsManager = new StatsManager(baseStats);
+            StatsManager = new StatsManager(baseStats);
 
             Inventory = new Inventory();
             QuickUse = new QuickUse();
@@ -33,10 +33,13 @@ namespace RpgCore
             EquipChange += UpdateStatsFromEquip;
         }
 
-        private void UpdateStatsFromEquip() => statsManager.EquipStats(Equip.GetItems());
+        private void UpdateStatsFromEquip() => StatsManager.EquipStats(Equip.GetItems());
 
-        public void UseItem(IUseable item) => AddEffect(item.Use());
-
+        public void UseItem(IUseable item)
+        {
+            Effect eff = item.Use();
+        }
+        
         public void Interact(IInteractable item) => item.Interact();
 
         public void PickUp(Item item) => Inventory.AddItem(item);
@@ -77,20 +80,12 @@ namespace RpgCore
             Inventory.AddItem(item);
         }
         
-        public void AddEffect(Effect effect)
-        {
-            if(effect.Target == EffectTarget.Character)
-            {
-                statsManager.ApplyEffect((IEffect<StatsManager>)effect);    
-            }
-            if (effect.Target == EffectTarget.Equip)
-            {
-                Equip.ApplyEffect((IEffect<Equipment>)effect);
-            }
-        } 
+        public void AddEffect(IEffect<StatsManager> effect) =>  StatsManager.ApplyEffect(effect);
 
-        public void Update() => statsManager.UpdateStats();
+        public void AddEffect(IEffect<EquipmentItems> effect) => Equip.ApplyEffect(effect);
 
-        public Stat GetStat(StatType type) => statsManager.GetStat(type);
+        public void Update() => StatsManager.UpdateStats();
+
+        public Stat GetStat(StatType type) => StatsManager.GetStat(type);
     }
 }

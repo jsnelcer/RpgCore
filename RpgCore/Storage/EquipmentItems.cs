@@ -32,9 +32,9 @@ namespace RpgCore.Storaged
             return Items.Select(x => x).Where(x => x.Slot == slot).FirstOrDefault();
         }
 
-        internal void ApplyEffect(IEffect<Equipment> effect)
+        internal void ApplyEffect(IEffect<EquipmentItems> effect)
         {
-            throw new NotImplementedException();
+            effect.ApplyEffect(this);
         }
     }
 }

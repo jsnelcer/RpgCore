@@ -5,7 +5,7 @@ using RpgCore.Items;
 
 namespace RpgCore
 {
-    public class Effect : IEffect<Stat>, IEffect<Equipment>
+    public class Effect
     {
         public EffectTarget Target { get; private set; }
         public StatType TargetStat { get; private set; }
@@ -25,11 +25,6 @@ namespace RpgCore
         public StatType GetTargetStat()
         {
             return TargetStat;
-        }
-
-        public void ApplyEffect(Equipment target)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

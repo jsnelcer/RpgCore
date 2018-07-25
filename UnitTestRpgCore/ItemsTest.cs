@@ -86,13 +86,9 @@ namespace UnitTestRpgCore
         public void AddItemsToInventory()
         {
             hero.PickUp(helm);
-            EquipEffect increaseHealth = new EquipEffect(EffectTarget.Character, StatType.Health, +30f);
 
             Assert.AreEqual(hero.Inventory.Items[0], helm);
-            Equipment item = (Equipment)hero.Inventory.Items[0];
-            item.RemoveEquipEffect(increaseHealth);
             
-            Assert.AreEqual(hero.Inventory.Items[0], helm);
         }
     }
 }
