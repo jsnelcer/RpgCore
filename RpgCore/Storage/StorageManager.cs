@@ -8,9 +8,9 @@ namespace RpgCore.Storaged
 {
     public class StorageManager
     {
-        public static Inventory inventory { get; private set; }
-        public static QuickUse quickUse { get; private set; }
-        public static EquipmentItems equip { get; private set; }
+        private static Inventory inventory;
+        private static QuickUse quickUse;
+        private static EquipmentItems equip;
 
         private static StorageManager instance = null;
 
@@ -32,6 +32,10 @@ namespace RpgCore.Storaged
         public event EquipChangeEvent EquipChange;
         public delegate void EquipChangeEvent();
 
+        public Inventory GetInventory()
+        {
+            return inventory;
+        }
 
         internal void ApplyEffect(Effect effect)
         {
@@ -44,6 +48,48 @@ namespace RpgCore.Storaged
 
             @switch[effect.GetType()]();
         }
+
+        public EquipmentItems GetEquip()
+        {
+            return equip;
+        }
+
+        public QuickUse GetQuickUse()
+        {
+            return quickUse;
+        }
+
+
+        public List<Equipment> GetEquipItems()
+        {
+            return equip.GetItems();
+        }
+
+        public List<Item> GetInventoryItems()
+        {
+            return inventory.GetItems();
+        }
+
+        public List<ConsumableItem> GetQuickUseItems()
+        {
+            return quickUse.GetItems();
+        }
+
+
+        public void Add2Inventory(Item item)
+        {
+            inventory.AddItem(item);
+        }
+
+        public void Add2Inventory(List<Item> items)
+        {
+            foreach(var item in items)
+            {
+                inventory.AddItem(item);
+            }            
+        }
+
+
 
         public void FromInventory2QuickUse(ConsumableItem item)
         {
@@ -109,5 +155,9 @@ namespace RpgCore.Storaged
             inventory.AddItem(item);
         }
 
+        public Equipment EquipFromSlot(EquipSlot slot)
+        {
+            return equip.GetItems().Select(x => x).Where(x => x.Slot == slot).FirstOrDefault();
+        }
     }
 }

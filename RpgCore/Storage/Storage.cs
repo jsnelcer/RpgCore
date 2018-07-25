@@ -6,26 +6,26 @@ namespace RpgCore.Storaged
 {
     public abstract class Storage<T> : IStorage<T>
     {
-        public List<T> Items { protected set; get; }
+        protected static List<T> items;
         
         public virtual void AddItem(T item)
         {
-            if(Items==null)
+            if(items==null)
             {
-                Items = new List<T>();
+                items = new List<T>();
             }
-            Items.Add(item);
+            items.Add(item);
         }
 
         public virtual void RemoveItem(T item)
         {
-            if (Items == null)
+            if (items == null)
             {
-                Items = new List<T>();
+                items = new List<T>();
             }
-            if (Items.Any(x => x.Equals(item)))
+            if (items.Any(x => x.Equals(item)))
             {
-                Items.Remove(item);
+                items.Remove(item);
             }
             else
             {
@@ -35,20 +35,20 @@ namespace RpgCore.Storaged
 
         public List<T> GetItems()
         {
-            if (Items==null)
+            if (items==null)
             {
-                Items = new List<T>();
+                items = new List<T>();
             } 
-            return Items;
+            return items;
         }
 
         public override string ToString()
         {
             string result = "";
-            if (Items.Any())
+            if (items.Any())
             {
                 result += "Items:";
-                foreach (T x in Items)
+                foreach (T x in items)
                 {
                     result += "\n " + x.ToString();
                 }

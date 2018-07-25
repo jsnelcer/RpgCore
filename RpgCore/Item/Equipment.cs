@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using RpgCore.Stats;
 using RpgCore.Enum;
 
 namespace RpgCore.Items
@@ -7,27 +9,17 @@ namespace RpgCore.Items
     public class Equipment : Item
     {
         public EquipSlot Slot { get; private set; }
-        public List<EquipEffect> EquipEffects { get; private set; }
+        private List<EquipEffect> EquipEffects { get; set; }
+        //private List<Effect> Effects { get; set; }
+        //private List<Stat> RecomendetAtribute { get; set; } 
 
         public Equipment(int id, string name, string description, EquipSlot slot)
             :base(id, name, description)
         {
             this.Slot = slot;
             EquipEffects = new List<EquipEffect>();
-        }
-
-        internal Equipment(int id, string name, string description)
-            : base(id, name, description)
-        {
-            EquipEffects = new List<EquipEffect>();
-        }
-
-        public void SetSlot(EquipSlot slot)
-        {
-            if (Slot == 0)
-            {
-                this.Slot = slot;
-            }
+            //Effects = new List<Effect>();
+            //RecomendetAtribute = new List<Stat>();
         }
 
         public void AddEquipEffect(EquipEffect effect)
@@ -44,8 +36,50 @@ namespace RpgCore.Items
 
         public void RemoveEquipEffect(EquipEffect effect)
         {
-            EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
-            EquipEffects.RemoveAll(x => x.Value == 0);
+            EquipEffects.Remove(effect);
         }
+
+        public List<EquipEffect> GetEquipEffects()
+        {
+            if (EquipEffects.Any())
+            {
+                return EquipEffects;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /*
+        public void AddEffect(Effect effect)
+        {
+            if (!Effects.Exists(x => x.TargetStat == effect.TargetStat))
+            {
+                Effects.Add(effect);
+            }
+            else
+            {
+                Effects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(effect.Value);
+            }
+        }
+
+        public void RemoveEffect(Effect effect)
+        {
+            Effects.Remove(effect);
+        }
+
+        public List<Effect> GetEffects()
+        {
+            if (Effects.Any())
+            {
+                return Effects;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        */
     }
 }
