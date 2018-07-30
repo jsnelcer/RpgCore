@@ -1,10 +1,10 @@
-﻿using RpgCore.Enum;
+﻿using System.Collections.Generic;
 
 namespace RpgCore.Inteface
 {
     public interface IEffect<T>
     {
-        StatType GetTargetStat();
-        void ApplyEffect(T target);
+
+        //TO DO
     }
 }
