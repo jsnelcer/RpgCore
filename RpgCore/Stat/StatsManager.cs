@@ -59,14 +59,14 @@ namespace RpgCore
             }
         }
 
-        public void EquipStats(List<Equipment> equip)
+        public void EquipStats(List<IEquiped> equip)
         {
             Stats.ForEach(stat =>
             {
                 stat.RemoveEquipModifier();
                 equip.ForEach(x =>
                 {
-                    var mod = x.EquipEffects.Where(y => y.TargetStat == stat.Type).FirstOrDefault();
+                    var mod = ((Equipment)x).EquipEffects.Where(y => y.TargetStat == stat.Type).FirstOrDefault();
                     if (mod != null)
                     {
                         stat.AddModifier(mod);

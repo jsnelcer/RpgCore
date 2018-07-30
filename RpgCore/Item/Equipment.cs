@@ -1,35 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RpgCore.Enum;
+using RpgCore.Inteface;
 
 namespace RpgCore.Items
 {
-    public class Equipment : Item
+    public class Equipment : IEquiped
     {
+        private int id { get; set; }
+        private string description { get; set; }
+        private string name { get; set; }
+        
+
+        public int Id => id;
+        public string Name => name;
+        public string Description => description;
+
+        public bool Equiped { get; set; }
         public EquipSlot Slot { get; private set; }
-        public List<EquipEffect> EquipEffects { get; private set; }
+        public List<EquipEffect> EquipEffects { get; internal set; }
 
-        public Equipment(int id, string name, string description, EquipSlot slot)
-            :base(id, name, description)
+        public Equipment(int _id, string _name, string _description, EquipSlot _slot)
         {
-            this.Slot = slot;
+            this.id = _id;
+            this.name = _name;
+            this.description = _description;
+            this.Slot = _slot;
             EquipEffects = new List<EquipEffect>();
+            Equiped = false;
         }
-
-        internal Equipment(int id, string name, string description)
-            : base(id, name, description)
-        {
-            EquipEffects = new List<EquipEffect>();
-        }
-
-        public void SetSlot(EquipSlot slot)
-        {
-            if (Slot == 0)
-            {
-                this.Slot = slot;
-            }
-        }
-
+        
         public void AddEquipEffect(EquipEffect effect)
         {
             if (!EquipEffects.Exists(x => x.TargetStat == effect.TargetStat))

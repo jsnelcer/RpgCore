@@ -31,18 +31,16 @@ namespace UnitTestRpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats);
-            
-            healthPotion = (ConsumableItem)Item.CreateItem(ItemType.Consumable, 99, "Health of Potion", "Get 40hp");
-            Effect restoreHealth = new Effect(EffectTarget.Character, StatType.Health, 40f);
-            healthPotion.SetEffect(restoreHealth);
+            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
-            helm = (Equipment)Item.CreateItem(ItemType.Equip, 999, "helm of fire", "fireeee");
+            Effect restoreHealth = new Effect(EffectTarget.Character, StatType.Health, 40f);
+            healthPotion = new ConsumableItem(99, "Health of Potion", "Get 40hp", restoreHealth);
+            
+            helm = new Equipment(999, "helm of fire", "fireeee", EquipSlot.Head);
             EquipEffect increaseHealth = new EquipEffect(EffectTarget.Character, StatType.Health, +30f);
             helm.AddEquipEffect(increaseHealth);
-            helm.SetSlot(EquipSlot.Head);
 
-            iron = (Resources)Item.CreateItem(ItemType.Resources, 19, "iron", "resource item");
+            iron = new Resources(19, "iron", "resource item");
         }
 
         [TestMethod]
@@ -86,9 +84,38 @@ namespace UnitTestRpgCore
         public void AddItemsToInventory()
         {
             hero.PickUp(helm);
+            hero.PickUp(healthPotion);
+            hero.PickUp(iron);
 
-            Assert.AreEqual(hero.Inventory.Items[0], helm);
-            
+            Assert.AreEqual(hero.Inventory.Items.Count, 3);
+
+            Assert.AreEqual(hero.Inventory.Items[0].Name, helm.Name);
+            Assert.AreEqual(hero.Inventory.Items[1].Name, healthPotion.Name);
+            Assert.AreEqual(hero.Inventory.Items[2].Name, iron.Name);
+        }
+
+        [TestMethod]
+        public void ChangeEquip()
+        {
+            hero.PickUp(helm);
+            hero.EquipItem(helm);
+
+            Assert.AreEqual(hero.Inventory.Items.Count, 0);
+            Assert.AreEqual(hero.Equip.Items.Where(x => x.Slot == EquipSlot.Head).FirstOrDefault(), helm);
+
+            IEquiped helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
+            hero.PickUp(helm_air);
+
+            Assert.AreEqual(helm.Equiped, true);
+            Assert.AreEqual(helm_air.Equiped, false);
+
+            hero.EquipItem(helm_air);
+
+
+            Assert.AreEqual(hero.Inventory.Items.Count, 1);
+            Assert.AreEqual(hero.Equip.Items.Where(x => x.Slot == EquipSlot.Head).FirstOrDefault(), helm_air);
+            Assert.AreEqual(helm_air.Equiped, true);
+            Assert.AreEqual(helm.Equiped, false);
         }
     }
 }

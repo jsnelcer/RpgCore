@@ -4,6 +4,7 @@ using RpgCore.Storaged;
 using RpgCore.Items;
 using RpgCore.Stats;
 using System.Collections.Generic;
+using RpgCore.Inteface;
 
 namespace RpgCore
 {
@@ -21,7 +22,7 @@ namespace RpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            Player hero = new Player("Kazisvet III.", "z Bozi vule král", stats);
+            Player hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
             Console.WriteLine(hero.ToString());
             Effect dmg = new TimeEffect(EffectTarget.Character, StatType.Health, -5f, 5);

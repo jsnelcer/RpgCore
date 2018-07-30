@@ -27,7 +27,7 @@ namespace UnitTestRpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats);
+            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
         }
 
