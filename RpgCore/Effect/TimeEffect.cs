@@ -1,17 +1,30 @@
 ﻿using RpgCore;
 using RpgCore.Enum;
-using RpgCore.Stats;
-using System;
+using System.Linq;
+using RpgCore.Inteface;
+
 namespace RpgCore
 {
-    public class TimeEffect : Effect
+    public class TimeEffect : IEffect<StatsManager>
     {
-        public int Stack { get; private set; }
+        private EffectTarget target { get; set; }
+        private float value { get; set; }
+        private StatType targetStat { get; set; }
 
-        public TimeEffect(EffectTarget target, StatType targetStat, float value, int stack)
-            :base(target, targetStat, value)
+        public EffectTarget Target => target;
+        public StatType TargetStat => targetStat;
+        public float Value => value;
+
+        public int Stack { get; private set; }
+        public int Step { get; private set; }
+
+        public TimeEffect(EffectTarget _target, StatType _targetStat, float _value, int stack, int step = 1)
         {
+            this.target = _target;
+            this.targetStat = _targetStat;
+            this.value = _value;
             this.Stack = stack;
+            this.Step = step;
         }
         
         public void AddStack(int stack)
@@ -21,7 +34,17 @@ namespace RpgCore
 
         public void Used()
         {
-            this.Stack--;
+            this.Stack -= Step;
+        }
+
+        public void ApplyEffect(StatsManager target)
+        {
+            target.DurationEffect.Add(this);
+        }
+        
+        public void IncreastValue(float _value)
+        {
+            value += _value;
         }
     }
 }

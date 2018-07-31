@@ -30,22 +30,22 @@ namespace RpgCore.Items
             Equiped = false;
         }
         
-        public void AddEquipEffect(EquipEffect effect)
-        {
-            if (!EquipEffects.Exists(x => x.TargetStat == effect.TargetStat))
-            {
-                EquipEffects.Add(effect);
-            }
-            else
-            {
-                EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(effect.Value);
-            }
-        }
+        //public void AddEquipEffect(EquipEffect effect)
+        //{
+        //    if (!EquipEffects.Exists(x => x.TargetStat == effect.TargetStat))
+        //    {
+        //        EquipEffects.Add(effect);
+        //    }
+        //    else
+        //    {
+        //        EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(effect.Value);
+        //    }
+        //}
 
-        public void RemoveEquipEffect(EquipEffect effect)
-        {
-            EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
-            EquipEffects.RemoveAll(x => x.Value == 0);
-        }
+        //public void RemoveEquipEffect(EquipEffect effect)
+        //{
+        //    EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
+        //    EquipEffects.RemoveAll(x => x.Value == 0);
+        //}
     }
 }

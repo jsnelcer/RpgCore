@@ -13,7 +13,7 @@ namespace RpgCore
         static void Main(string[] args)
         {
 
-            List<Stat> stats = new List<Stat>
+            List<IStat> stats = new List<IStat>
             {
                 new RegenerationStat(100f, StatType.Health),
                 new RegenerationStat(100f, StatType.Energy),
@@ -25,27 +25,31 @@ namespace RpgCore
             Player hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
             Console.WriteLine(hero.ToString());
-            Effect dmg = new TimeEffect(EffectTarget.Character, StatType.Health, -5f, 5);
-            Effect effect = new InstantEffect(EffectTarget.Character, StatType.Health, +40f);
-            Effect InstaDmg = new InstantEffect(EffectTarget.Character, StatType.Health, -85f);
+            IEffect<StatsManager> dmg = new TimeEffect(EffectTarget.Character, StatType.Health, -5f, 5);
+            IEffect<StatsManager> effect = new InstantEffect(EffectTarget.Character, StatType.Health, +40f);
+            IEffect<StatsManager> InstaDmg = new InstantEffect(EffectTarget.Character, StatType.Health, -85f);
 
-            ConsumableItem healthPotion = new ConsumableItem(99, "Health of Potion", "Get 40hp", effect);
-            Equipment helm = new Equipment(999, "helm of fire", "fireeee", EquipSlot.Head);
-            EquipEffect eff = new EquipEffect(EffectTarget.Character, StatType.Health, +30f);
-            helm.AddEquipEffect(eff);
-            helm.RemoveEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +30f));
-            Equipment helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
-            helm_air.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, +80f));
+            IEffect<StatsManager> time = new TimeEffect(EffectTarget.Character, StatType.Health, -10, 3, 1);
+            Console.WriteLine("100f => " + hero.GetStat(StatType.Health).Value);
+            hero.AddEffect(time);
 
-            hero.PickUp(healthPotion);
+            Console.WriteLine("100f => " + hero.GetStat(StatType.Health).Value);
+            //Assert.AreEqual(3, time.Stack);
+            hero.Update();
 
-            hero.PickUp(helm);
-            hero.EquipItem(helm);
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
-            hero.PickUp(helm_air);
-            hero.EquipItem(helm_air);
-            Console.WriteLine(hero.GetStat(StatType.Health).GetValue());
+            Console.WriteLine("90f => " + hero.GetStat(StatType.Health).Value);
+            //Assert.AreEqual(2, time.Stack);
+            hero.Update();
 
+            Console.WriteLine("80f => " + hero.GetStat(StatType.Health).Value);
+            //Assert.AreEqual(1, time.Stack);
+            hero.Update();
+
+            Console.WriteLine("70f => " + hero.GetStat(StatType.Health).Value);
+            //Assert.AreEqual(0, time.Stack);
+            hero.Update();
+
+            Console.WriteLine("70f => " + hero.GetStat(StatType.Health).Value);
 
 
             Console.ReadLine();

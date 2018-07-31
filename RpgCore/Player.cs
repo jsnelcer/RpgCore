@@ -27,7 +27,7 @@ namespace RpgCore
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
 
-        public Player(string name, string description, List<Stat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
+        public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
             this.name = name;
             this.description = description;
@@ -45,13 +45,13 @@ namespace RpgCore
 
         public void UseItem(IUseable item)
         {
-            Effect eff = item.Use();
+            IEffect<StatsManager> eff = item.Use();
         }
         
         public void Interact(IInteractable item) => item.Interact();
 
         public void PickUp(IItem item) => Inventory.AddItem(item);
-
+        
         public void EquipItem(IEquiped item)
         {
             try
@@ -76,7 +76,7 @@ namespace RpgCore
                 throw (e);
             }
         }
-
+        
         public void FromEquipToInventory(IEquiped item)
         {
             try
@@ -97,6 +97,6 @@ namespace RpgCore
 
         public void Update() => StatsManager.UpdateStats();
 
-        public Stat GetStat(StatType type) => StatsManager.GetStat(type);
+        public IStat GetStat(StatType type) => StatsManager.GetStat(type);
     }
 }

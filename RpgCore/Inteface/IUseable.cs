@@ -1,6 +1,7 @@
 using RpgCore;
-using RpgCore.Items;
+using RpgCore.Inteface;
+
 public interface IUseable
 {
-    Effect Use();
+    IEffect<StatsManager> Use();
 }

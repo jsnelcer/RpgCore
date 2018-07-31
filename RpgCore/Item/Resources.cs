@@ -6,7 +6,7 @@ using RpgCore.Items;
 
 namespace RpgCore.Items
 {
-    public class Resources : IItem, IUseable
+    public class Resources : IItem
     {
 
         private int id { get; set; }
@@ -24,9 +24,5 @@ namespace RpgCore.Items
             this.description = description;
         }
 
-        public Effect Use()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

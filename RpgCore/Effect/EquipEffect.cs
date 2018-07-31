@@ -2,12 +2,8 @@
 
 namespace RpgCore
 {
-    public class EquipEffect : Effect
+    public class EquipEffect 
     {
-        public EquipEffect(EffectTarget target, StatType targetStat, float value)
-            :base(target, targetStat, value)
-        {
 
-        }
     }
 }

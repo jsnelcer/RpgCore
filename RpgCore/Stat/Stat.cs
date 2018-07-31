@@ -1,47 +1,63 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RpgCore.Enum;
-using RpgCore;
+using RpgCore.Inteface;
 
 namespace RpgCore.Stats
 {
-    public class Stat : BaseStat
+    public class Stat : IStat
     {
-        private List<Effect> Modifiers { get; set; }
-        public Stat(float baseValue, StatType type):
-            base(baseValue, type)
+        private List<IEffect<StatsManager>> Modifiers { get; set; }
+
+        private float value { get; set; }
+        private StatType type { get; set; }
+
+        public StatType Type => type;
+        public float Value
         {
-            Modifiers = new List<Effect>();
+            get
+            {
+                return value + Modifiers.Sum(x=>x.Value);
+            }
         }
 
-        public void ChangeBaseValue(float value)
+        public Stat(float value, StatType type)
         {
-            this.Value += value;
-        }
+            this.value = value;
+            this.type = type;
 
-        public void AddModifier(Effect value)
+            Modifiers = new List<IEffect<StatsManager>>();
+        }
+        
+        public void AddModifier(IEffect<StatsManager> value)
         {
             Modifiers.Add(value);
         }
 
-        public void RemoveModifier(Effect value)
+        public void RemoveModifier(IEffect<StatsManager> value)
         {
             Modifiers.Remove(value);
-        }
-
-        public override float GetValue()
-        {
-            return base.Value + Modifiers.Select(x=>x.Value).Sum();
-        }
-
-        public float GetBaseValue()
-        {
-            return base.Value;
         }
 
         public void RemoveEquipModifier()
         {
             Modifiers.RemoveAll(x => x.GetType() == typeof(EquipEffect));
+        }
+
+        //maybe change?....
+        public void ApplyInstantEffect(InstantEffect effect)
+        {
+            value += effect.Value;
+        }
+
+        public void DurationEffectStep(TimeEffect effect)
+        {
+            AddModifier(effect);
+        }
+
+        public void DurationEffectEnd(TimeEffect effect)
+        {
+            Modifiers.RemoveAll(x => x == effect);
         }
     }
 }
