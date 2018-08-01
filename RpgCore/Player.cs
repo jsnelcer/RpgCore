@@ -59,13 +59,11 @@ namespace RpgCore
                 Inventory.RemoveItem(item);
                 if (Equip.Items.Any(x => x.Slot == item.Slot))
                 {
-                    IEquiped change = Equip.Items.Where(x=>x.Slot == item.Slot).FirstOrDefault();
+                    IEquiped change = Equip.Items.Where(x => x.Slot == item.Slot).FirstOrDefault();
                     FromEquipToInventory(change);
                 }
-                
                 Equip.AddItem(item);
                 item.Equiped = true;
-
                 if (EquipChange != null)
                 {
                     EquipChange.Invoke();

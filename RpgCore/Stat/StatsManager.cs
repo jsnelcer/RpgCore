@@ -30,11 +30,14 @@ namespace RpgCore
         
         public void ApplyEffect(IEffect effect)
         {            
-            effect.ApplyEffect(Stats.Find(x => x.Type == effect.TargetStat));
-
             if(effect.GetType() == typeof(TimeEffect))
             {
                 DurationEffect.Add((TimeEffect)effect);
+                effect.ApplyEffect(Stats.Find(x => x.Type == effect.TargetStat));
+            }
+            else
+            {
+                effect.ApplyEffect(Stats.Find(x => x.Type == effect.TargetStat));
             }
         }
 
@@ -44,11 +47,10 @@ namespace RpgCore
             {
                 DurationEffect.ForEach(effect =>
                 {
-                    if (effect.Stack > 0)
+                    if (effect.Stack >= 0)
                     {
-                        Stats.Find(x => x.Type == effect.TargetStat).DurationEffectStep(effect);
+                        effect.ApplyEffect(Stats.Find(x => x.Type == effect.TargetStat));
                     }
-                    effect.Used();
                 });
 
                 DurationEffect.ForEach(effect =>
@@ -61,26 +63,21 @@ namespace RpgCore
             }
         }
 
-        internal void EquipStats(List<IEquiped> items)
+        public void EquipStats(List<IEquiped> equip)
         {
-            throw new NotImplementedException();
+            RemoveEquipEffects();
+            equip.ForEach(item =>
+                {
+                    item.EquipEffects.ForEach(effect =>
+                    {
+                        effect.ApplyEffect(Stats.Find(x => x.Type == effect.TargetStat));
+                    });
+                });
         }
 
-        //public void EquipStats(List<IEquiped> equip)
-        //{
-        //    Stats.ForEach(stat =>
-        //    {
-        //        stat.RemoveEquipModifier();
-        //        equip.ForEach(x =>
-        //        {
-        //            var mod = ((Equipment)x).EquipEffects.Where(y => y.TargetStat == stat.Type).FirstOrDefault();
-        //            if (mod != null)
-        //            {
-        //                stat.AddModifier(mod);
-        //            }
-        //        });
-        //    });
-
-        //}
+        private void RemoveEquipEffects()
+        {
+            Stats.ForEach(x => x.RemoveEquipEffects());
+        }
     }
 }

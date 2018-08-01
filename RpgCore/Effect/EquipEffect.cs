@@ -13,7 +13,7 @@ namespace RpgCore
 
         public void ApplyEffect(IStat target)
         {
-            throw new System.NotImplementedException();
+            target.EquipEffect(this);
         }
 
         public void IncreastValue(float value)

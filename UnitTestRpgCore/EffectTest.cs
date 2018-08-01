@@ -38,10 +38,6 @@ namespace UnitTestRpgCore
             Assert.AreEqual(100f, hero.GetStat(StatType.Health).Value);
             hero.AddEffect(time);
 
-            Assert.AreEqual(100f, hero.GetStat(StatType.Health).Value);
-            //Assert.AreEqual(3, time.Stack);
-            hero.Update();
-
             Assert.AreEqual(90f, hero.GetStat(StatType.Health).Value);
             //Assert.AreEqual(2, time.Stack);
             hero.Update();
@@ -56,6 +52,9 @@ namespace UnitTestRpgCore
 
             Assert.AreEqual(70f, hero.GetStat(StatType.Health).Value);
             //Assert.AreEqual(-1, time.Stack);
+            hero.Update();
+
+            Assert.AreEqual(70f, hero.GetStat(StatType.Health).Value);
         }
 
         [TestMethod]
@@ -64,12 +63,7 @@ namespace UnitTestRpgCore
             IEffect time = new TimeEffect(EffectTarget.Character, StatType.Intelligence, -3, 3, 1);
             Assert.AreEqual(30f, hero.GetStat(StatType.Intelligence).Value);
             hero.AddEffect(time);
-
-
-            Assert.AreEqual(30f, hero.GetStat(StatType.Intelligence).Value);
-            //Assert.AreEqual(3, time.Stack);
-            hero.Update();
-
+            
             Assert.AreEqual(27f, hero.GetStat(StatType.Intelligence).Value);
             //Assert.AreEqual(2, time.Stack);
             hero.Update();
@@ -81,7 +75,7 @@ namespace UnitTestRpgCore
             Assert.AreEqual(21f, hero.GetStat(StatType.Intelligence).Value);
             //Assert.AreEqual(0, time.Stack);
             hero.Update();
-
+            
             Assert.AreEqual(30f, hero.GetStat(StatType.Intelligence).Value);
             //Assert.AreEqual(-1, time.Stack);
         }

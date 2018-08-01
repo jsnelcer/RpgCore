@@ -18,6 +18,7 @@ namespace RpgCore
         public int Stack { get; private set; }
         public int Step { get; private set; }
 
+
         public TimeEffect(EffectTarget _target, StatType _targetStat, float _value, int stack, int step = 1)
         {
             this.target = _target;

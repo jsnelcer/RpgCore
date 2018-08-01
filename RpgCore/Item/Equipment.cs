@@ -18,7 +18,7 @@ namespace RpgCore.Items
 
         public bool Equiped { get; set; }
         public EquipSlot Slot { get; private set; }
-        public List<EquipEffect> EquipEffects { get; internal set; }
+        public List<IEffect> EquipEffects { get; internal set; }
 
         public Equipment(int _id, string _name, string _description, EquipSlot _slot)
         {
@@ -26,26 +26,26 @@ namespace RpgCore.Items
             this.name = _name;
             this.description = _description;
             this.Slot = _slot;
-            EquipEffects = new List<EquipEffect>();
+            EquipEffects = new List<IEffect>();
             Equiped = false;
         }
-        
-        //public void AddEquipEffect(EquipEffect effect)
-        //{
-        //    if (!EquipEffects.Exists(x => x.TargetStat == effect.TargetStat))
-        //    {
-        //        EquipEffects.Add(effect);
-        //    }
-        //    else
-        //    {
-        //        EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(effect.Value);
-        //    }
-        //}
 
-        //public void RemoveEquipEffect(EquipEffect effect)
-        //{
-        //    EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
-        //    EquipEffects.RemoveAll(x => x.Value == 0);
-        //}
+        public void AddEquipEffect(IEffect effect)
+        {
+            if (!EquipEffects.Exists(x => x.TargetStat == effect.TargetStat))
+            {
+                EquipEffects.Add(effect);
+            }
+            else
+            {
+                EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(effect.Value);
+            }
+        }
+
+        public void RemoveEquipEffect(EquipEffect effect)
+        {
+            EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
+            EquipEffects.RemoveAll(x => x.Value == 0);
+        }
     }
 }

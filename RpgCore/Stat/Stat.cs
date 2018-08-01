@@ -7,7 +7,7 @@ namespace RpgCore.Stats
 {
     public class Stat : IStat
     {
-        private List<IEffect> Modifiers { get; set; }
+        private List<IEffect> modifiers { get; set; }
 
         private float value { get; set; }
         private StatType type { get; set; }
@@ -17,31 +17,33 @@ namespace RpgCore.Stats
         {
             get
             {
-                return value + Modifiers.Sum(x=>x.Value);
+                return value + modifiers.Sum(x=>x.Value);
             }
         }
+        
+        List<IEffect> IStat.Modifiers => this.modifiers;
 
         public Stat(float value, StatType type)
         {
             this.value = value;
             this.type = type;
 
-            Modifiers = new List<IEffect>();
+            modifiers = new List<IEffect>();
         }
         
         public void AddModifier(IEffect value)
         {
-            Modifiers.Add(value);
+            modifiers.Add(value);
         }
 
         public void RemoveModifier(IEffect value)
         {
-            Modifiers.Remove(value);
+            modifiers.Remove(value);
         }
 
-        public void RemoveEquipModifier()
+        public void RemoveEquipEffects()
         {
-            Modifiers.RemoveAll(x => x.GetType() == typeof(EquipEffect));
+            modifiers.RemoveAll(x => x.GetType() == typeof(EquipEffect));
         }
 
         //maybe change?....
@@ -52,17 +54,21 @@ namespace RpgCore.Stats
 
         public void DurationEffectStep(TimeEffect effect)
         {
-            AddModifier(effect);
+            if (effect.Stack > 0)
+            {
+                AddModifier(effect);
+            }
+            effect.Used(); //init stack -1;
         }
 
         public void DurationEffectEnd(TimeEffect effect)
         {
-            Modifiers.RemoveAll(x => x == effect);
+            modifiers.RemoveAll(x => x == effect);
         }
 
         public void EquipEffect(EquipEffect effect)
         {
-            Modifiers.Add(effect);
+            modifiers.Add(effect);
         }
     }
 }

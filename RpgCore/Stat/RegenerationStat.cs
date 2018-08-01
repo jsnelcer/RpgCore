@@ -7,29 +7,33 @@ namespace RpgCore.Stats
 {
     public class RegenerationStat : IStat
     {
-        private List<IEffect> Modifiers { get; set; }
+        private List<IEffect> modifiers { get; set; }
 
         private float value { get; set; }
         private StatType type { get; set; }
+        private float maxValue
+        {
+            get;
+            set;
+        }
+        
+        public StatType Type => type;
         public float MaxValue
         {
             get
             {
-                return value + Modifiers.Sum(x => x.Value);
-            }
-            private set
-            {
-                MaxValue = value;
+                return this.maxValue + modifiers.Sum(x => x.Value);
             }
         }
-        
-        public StatType Type => type;
-
         public float Value => value;
+
+        public List<IEffect> Modifiers => this.modifiers;
 
         public RegenerationStat(float maxValue, StatType type)
         {
-            this.MaxValue = maxValue;
+
+            this.modifiers = new List<IEffect>();
+            this.maxValue = maxValue;
             this.value = maxValue;
             this.type = type;
         }
@@ -48,14 +52,18 @@ namespace RpgCore.Stats
 
         public void DurationEffectStep(TimeEffect effect)
         {
-            if (value + effect.Value < MaxValue)
+            if (effect.Stack > 0)
             {
-                value += effect.Value;
+                if (value + effect.Value < MaxValue)
+                {
+                    value += effect.Value;
+                }
+                else
+                {
+                    this.value = MaxValue;
+                }
             }
-            else
-            {
-                this.value = MaxValue;
-            }
+            effect.Used(); //init stack -1;
         }
 
         public void DurationEffectEnd(TimeEffect effect)
@@ -65,7 +73,12 @@ namespace RpgCore.Stats
 
         public void EquipEffect(EquipEffect effect)
         {
-            Modifiers.RemoveAll(x => x == effect);
+            modifiers.Add(effect);
+        }
+
+        public void RemoveEquipEffects()
+        {
+            modifiers.RemoveAll(x => x.GetType() == typeof(EquipEffect));
         }
     }
 }
