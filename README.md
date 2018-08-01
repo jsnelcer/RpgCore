@@ -5,13 +5,11 @@ Develop version (unusable)
 - Items - Equip
         - Potion
 - Effects
-- Storage - InventoryManager
-          - EquipManager
+- Storage 
 - Character - Player (in progress)
 
 Next step
 - Comments
-- Craft/Receipt (extensions of Item ??? xml?)
-- Factory Method (Items,Charater....)
+- Craft/Receipt (extensions of Item ??)
 - Combat system
 ....
