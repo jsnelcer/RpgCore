@@ -5,7 +5,7 @@ using RpgCore.Inteface;
 
 namespace RpgCore
 {
-    public class TimeEffect : IEffect<StatsManager>
+    public class TimeEffect : IEffect
     {
         private EffectTarget target { get; set; }
         private float value { get; set; }
@@ -37,9 +37,9 @@ namespace RpgCore
             this.Stack -= Step;
         }
 
-        public void ApplyEffect(StatsManager target)
+        public void ApplyEffect(IStat target)
         {
-            target.DurationEffect.Add(this);
+            target.DurationEffectStep(this);
         }
         
         public void IncreastValue(float _value)

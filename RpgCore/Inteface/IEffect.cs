@@ -2,13 +2,13 @@
 
 namespace RpgCore.Inteface
 {
-    public interface IEffect<T>
+    public interface IEffect
     {
         EffectTarget Target { get; }
         StatType TargetStat { get; }
         float Value { get; }
 
         void IncreastValue(float value);
-        void ApplyEffect(T target);
+        void ApplyEffect(IStat target);
     }
 }

@@ -28,9 +28,14 @@ namespace RpgCore
             return Stats.Find(x => x.Type == type);
         }
         
-        public void ApplyEffect(IEffect<StatsManager> effect)
-        {
-            effect.ApplyEffect(this);
+        public void ApplyEffect(IEffect effect)
+        {            
+            effect.ApplyEffect(Stats.Find(x => x.Type == effect.TargetStat));
+
+            if(effect.GetType() == typeof(TimeEffect))
+            {
+                DurationEffect.Add((TimeEffect)effect);
+            }
         }
 
         public void UpdateStats()

@@ -1,13 +1,27 @@
 ﻿using RpgCore.Inteface;
 using RpgCore.Enum;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RpgCore.Stats
 {
     public class RegenerationStat : IStat
     {
+        private List<IEffect> Modifiers { get; set; }
+
         private float value { get; set; }
         private StatType type { get; set; }
-        public float MaxValue { get; private set; }
+        public float MaxValue
+        {
+            get
+            {
+                return value + Modifiers.Sum(x => x.Value);
+            }
+            private set
+            {
+                MaxValue = value;
+            }
+        }
         
         public StatType Type => type;
 
@@ -47,6 +61,11 @@ namespace RpgCore.Stats
         public void DurationEffectEnd(TimeEffect effect)
         {
             // do nothing
+        }
+
+        public void EquipEffect(EquipEffect effect)
+        {
+            Modifiers.RemoveAll(x => x == effect);
         }
     }
 }

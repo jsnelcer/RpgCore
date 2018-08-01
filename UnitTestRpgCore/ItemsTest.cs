@@ -33,7 +33,7 @@ namespace UnitTestRpgCore
 
             hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
-            IEffect<StatsManager> restoreHealth = new InstantEffect(EffectTarget.Character, StatType.Health, 40f);
+            IEffect restoreHealth = new InstantEffect(EffectTarget.Character, StatType.Health, 40f);
             healthPotion = new ConsumableItem(99, "Health of Potion", "Get 40hp", restoreHealth);
             
             helm = new Equipment(999, "helm of fire", "fireeee", EquipSlot.Head);
@@ -46,7 +46,7 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void CreateConsumableItemTest()
         {
-            IEffect<StatsManager> restoreHealth = new InstantEffect(EffectTarget.Character, StatType.Health, 40f);
+            IEffect restoreHealth = new InstantEffect(EffectTarget.Character, StatType.Health, 40f);
 
             Assert.AreEqual(99, healthPotion.Id);
             Assert.AreEqual("Health of Potion", healthPotion.Name);

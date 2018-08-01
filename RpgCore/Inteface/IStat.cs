@@ -8,8 +8,8 @@ namespace RpgCore.Inteface
         float Value { get; }
 
         void ApplyInstantEffect(InstantEffect effectValue);
-
         void DurationEffectStep(TimeEffect effectValue);
         void DurationEffectEnd(TimeEffect effectValue);
+        void EquipEffect(EquipEffect effectValue);
     }
 }

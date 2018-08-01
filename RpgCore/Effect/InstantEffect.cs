@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RpgCore
 {
-    public class InstantEffect : IEffect<StatsManager>
+    public class InstantEffect : IEffect
     {
         private EffectTarget target { get; set; }
 
@@ -26,9 +26,9 @@ namespace RpgCore
             this.value = _value;
         }
 
-        public void ApplyEffect(StatsManager target)
+        public void ApplyEffect(IStat target)
         {
-            target.Stats.Where(x => x.Type == targetStat).FirstOrDefault().ApplyInstantEffect(this);
+            target.ApplyInstantEffect(this);
         }
 
         public void IncreastValue(float _value)

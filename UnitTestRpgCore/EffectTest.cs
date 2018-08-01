@@ -34,7 +34,7 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void TimeEffectApplyOnRegenerationStat()
         {
-            IEffect<StatsManager> time = new TimeEffect(EffectTarget.Character, StatType.Health, -10, 3, 1);
+            IEffect time = new TimeEffect(EffectTarget.Character, StatType.Health, -10, 3, 1);
             Assert.AreEqual(100f, hero.GetStat(StatType.Health).Value);
             hero.AddEffect(time);
 
@@ -61,7 +61,7 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void TimeEffectApplyOnStat()
         {
-            IEffect<StatsManager> time = new TimeEffect(EffectTarget.Character, StatType.Intelligence, -3, 3, 1);
+            IEffect time = new TimeEffect(EffectTarget.Character, StatType.Intelligence, -3, 3, 1);
             Assert.AreEqual(30f, hero.GetStat(StatType.Intelligence).Value);
             hero.AddEffect(time);
 
@@ -89,7 +89,7 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void InstantEffectApplyOnRegenerationStat()
         {
-            IEffect<StatsManager> insta = new InstantEffect(EffectTarget.Character, StatType.Health, -60f);
+            IEffect insta = new InstantEffect(EffectTarget.Character, StatType.Health, -60f);
             Assert.AreEqual(100f, hero.GetStat(StatType.Health).Value);
             hero.AddEffect(insta);
 

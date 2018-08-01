@@ -45,7 +45,7 @@ namespace RpgCore
 
         public void UseItem(IUseable item)
         {
-            IEffect<StatsManager> eff = item.Use();
+            IEffect eff = item.Use();
         }
         
         public void Interact(IInteractable item) => item.Interact();
@@ -91,7 +91,7 @@ namespace RpgCore
             Inventory.AddItem(item);
         }
         
-        public void AddEffect(IEffect<StatsManager> effect) =>  StatsManager.ApplyEffect(effect);
+        public void AddEffect(IEffect effect) =>  StatsManager.ApplyEffect(effect);
 
         //public void AddEffect(IEffect<EquipmentItems> effect) => equip.ApplyEffect(effect);
 

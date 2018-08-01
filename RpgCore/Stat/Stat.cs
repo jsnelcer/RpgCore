@@ -7,7 +7,7 @@ namespace RpgCore.Stats
 {
     public class Stat : IStat
     {
-        private List<IEffect<StatsManager>> Modifiers { get; set; }
+        private List<IEffect> Modifiers { get; set; }
 
         private float value { get; set; }
         private StatType type { get; set; }
@@ -26,15 +26,15 @@ namespace RpgCore.Stats
             this.value = value;
             this.type = type;
 
-            Modifiers = new List<IEffect<StatsManager>>();
+            Modifiers = new List<IEffect>();
         }
         
-        public void AddModifier(IEffect<StatsManager> value)
+        public void AddModifier(IEffect value)
         {
             Modifiers.Add(value);
         }
 
-        public void RemoveModifier(IEffect<StatsManager> value)
+        public void RemoveModifier(IEffect value)
         {
             Modifiers.Remove(value);
         }
@@ -58,6 +58,11 @@ namespace RpgCore.Stats
         public void DurationEffectEnd(TimeEffect effect)
         {
             Modifiers.RemoveAll(x => x == effect);
+        }
+
+        public void EquipEffect(EquipEffect effect)
+        {
+            Modifiers.Add(effect);
         }
     }
 }

@@ -14,9 +14,9 @@ namespace RpgCore.Items
         public string Name => name;
         public string Description => description;
 
-        public IEffect<StatsManager> Effect { private set; get; }
+        public IEffect Effect { private set; get; }
 
-        public ConsumableItem(int id, string name, string description, IEffect<StatsManager> value)
+        public ConsumableItem(int id, string name, string description, IEffect value)
         {
             this.id = id;
             this.name = name;
@@ -24,7 +24,7 @@ namespace RpgCore.Items
             this.Effect = value;
         }
         
-        public void SetEffect(IEffect<StatsManager> value)
+        public void SetEffect(IEffect value)
         {
             if(Effect == null)
             {
@@ -32,7 +32,7 @@ namespace RpgCore.Items
             }
         }
 
-        public IEffect<StatsManager> Use()
+        public IEffect Use()
         {
             return Effect;
         }

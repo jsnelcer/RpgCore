@@ -25,11 +25,11 @@ namespace RpgCore
             Player hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
             Console.WriteLine(hero.ToString());
-            IEffect<StatsManager> dmg = new TimeEffect(EffectTarget.Character, StatType.Health, -5f, 5);
-            IEffect<StatsManager> effect = new InstantEffect(EffectTarget.Character, StatType.Health, +40f);
-            IEffect<StatsManager> InstaDmg = new InstantEffect(EffectTarget.Character, StatType.Health, -85f);
+            IEffect dmg = new TimeEffect(EffectTarget.Character, StatType.Health, -5f, 5);
+            IEffect effect = new InstantEffect(EffectTarget.Character, StatType.Health, +40f);
+            IEffect InstaDmg = new InstantEffect(EffectTarget.Character, StatType.Health, -85f);
 
-            IEffect<StatsManager> time = new TimeEffect(EffectTarget.Character, StatType.Health, -10, 3, 1);
+            IEffect time = new TimeEffect(EffectTarget.Character, StatType.Health, -10, 3, 1);
             Console.WriteLine("100f => " + hero.GetStat(StatType.Health).Value);
             hero.AddEffect(time);
 
