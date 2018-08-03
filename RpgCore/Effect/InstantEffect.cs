@@ -1,7 +1,5 @@
 ﻿using RpgCore.Enum;
 using RpgCore.Inteface;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace RpgCore
 {

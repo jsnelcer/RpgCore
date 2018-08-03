@@ -80,6 +80,7 @@ namespace UnitTestRpgCore
             //Assert.AreEqual(-1, time.Stack);
         }
 
+
         [TestMethod]
         public void InstantEffectApplyOnRegenerationStat()
         {
@@ -93,15 +94,48 @@ namespace UnitTestRpgCore
         }
 
         [TestMethod]
-        public void EquipEffect()
+        public void InstantEffectApplyOnStat()
         {
-            //IEffect<EquipmentItems> helmEffect = new EquipEffect(EquipSlot.Head, StatType.Health, -60f);
-            //Assert.AreEqual(100f, hero.GetStat(StatType.Health).GetValue());
-            //hero.AddEffect(helmEffect);
+            IEffect insta = new InstantEffect(EffectTarget.Character, StatType.Intelligence, -5f);
+            Assert.AreEqual(30f, hero.GetStat(StatType.Intelligence).Value);
+            hero.AddEffect(insta);
 
-            //Assert.AreEqual(40f, hero.GetStat(StatType.Health).GetValue());
+            Assert.AreEqual(25f, hero.GetStat(StatType.Intelligence).Value);
         }
 
 
+        [TestMethod]
+        public void EquipEffect()
+        {
+            Assert.AreEqual(100f, hero.GetStat(StatType.Health).Value);
+
+            IEffect helmEffect_health = new EquipEffect(EffectTarget.Character, StatType.Health, 60f);
+            IEffect helmEffect_energy = new EquipEffect(EffectTarget.Character, StatType.Energy, -60f);
+            IEffect helmEffect_int = new EquipEffect(EffectTarget.Character, StatType.Intelligence, 10f);
+
+            Equipment helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
+            helm_air.AddEquipEffect(helmEffect_health);
+            helm_air.AddEquipEffect(helmEffect_energy);
+            helm_air.AddEquipEffect(helmEffect_int);
+            hero.PickUp(helm_air);
+            hero.EquipItem(helm_air);
+
+            Assert.AreEqual(helm_air.Equiped, true);
+
+            Assert.AreEqual(160f, ((RegenerationStat)hero.GetStat(StatType.Health)).MaxValue);
+            Assert.AreEqual(100f, ((RegenerationStat)hero.GetStat(StatType.Health)).Value);
+
+            Assert.AreEqual(40f, ((RegenerationStat)hero.GetStat(StatType.Energy)).MaxValue);
+            Assert.AreEqual(40f, ((RegenerationStat)hero.GetStat(StatType.Energy)).Value);
+
+            Assert.AreEqual(40f, hero.GetStat(StatType.Intelligence).Value);
+
+
+
+            //change helm
+
+            //hero.EquipItem(
+        }
+        
     }
 }

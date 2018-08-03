@@ -24,5 +24,14 @@ namespace RpgCore.Items
             this.description = description;
         }
 
+        public IItem Copy()
+        {
+            return (Resources)Clone();
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

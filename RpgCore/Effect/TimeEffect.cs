@@ -5,8 +5,9 @@ using RpgCore.Inteface;
 
 namespace RpgCore
 {
-    public class TimeEffect : IEffect
+    public class TimeEffect : IEffect, IRefill
     {
+        private int initStack { get; set; }
         private EffectTarget target { get; set; }
         private float value { get; set; }
         private StatType targetStat { get; set; }
@@ -25,6 +26,7 @@ namespace RpgCore
             this.targetStat = _targetStat;
             this.value = _value;
             this.Stack = stack;
+            this.initStack = stack;
             this.Step = step;
         }
         
@@ -46,6 +48,11 @@ namespace RpgCore
         public void IncreastValue(float _value)
         {
             value += _value;
+        }
+
+        public void Refill()
+        {
+            Stack = initStack;
         }
     }
 }

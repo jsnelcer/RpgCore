@@ -47,5 +47,17 @@ namespace RpgCore.Items
             EquipEffects.Find(x => x.TargetStat == effect.TargetStat).IncreastValue(-effect.Value);
             EquipEffects.RemoveAll(x => x.Value == 0);
         }
+
+
+        public IItem Copy()
+        {
+            return (Equipment)Clone();
+        }
+
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

@@ -74,6 +74,7 @@ namespace RpgCore.Stats
         public void EquipEffect(EquipEffect effect)
         {
             modifiers.Add(effect);
+            if (value > MaxValue) { value = MaxValue; }
         }
 
         public void RemoveEquipEffects()

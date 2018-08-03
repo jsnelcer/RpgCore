@@ -36,5 +36,15 @@ namespace RpgCore.Items
         {
             return Effect;
         }
+
+        public IItem Copy()
+        {
+            return (ConsumableItem)Clone();
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

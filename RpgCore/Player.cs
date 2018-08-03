@@ -46,6 +46,7 @@ namespace RpgCore
         public void UseItem(IUseable item)
         {
             IEffect eff = item.Use();
+            StatsManager.ApplyEffect(eff);
         }
         
         public void Interact(IInteractable item) => item.Interact();
@@ -90,11 +91,14 @@ namespace RpgCore
         }
         
         public void AddEffect(IEffect effect) =>  StatsManager.ApplyEffect(effect);
-
-        //public void AddEffect(IEffect<EquipmentItems> effect) => equip.ApplyEffect(effect);
-
+        
         public void Update() => StatsManager.UpdateStats();
 
         public IStat GetStat(StatType type) => StatsManager.GetStat(type);
+
+        public List<IItem> InventoryFilter(string contain)
+        {
+            return Inventory.Items.Where(x => x.Name.Contains(contain) || x.Description.Contains(contain)).ToList();
+        }
     }
 }
