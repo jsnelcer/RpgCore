@@ -29,7 +29,17 @@ namespace RpgCore
             this.initStack = stack;
             this.Step = step;
         }
-        
+
+        protected TimeEffect(TimeEffect anotherEffect)
+        {
+            this.target = anotherEffect.Target;
+            this.targetStat = anotherEffect.TargetStat;
+            this.value = anotherEffect.Value;
+            this.Stack = anotherEffect.Stack;
+            this.initStack = anotherEffect.Stack;
+            this.Step = anotherEffect.Step;
+        }
+
         public void AddStack(int stack)
         {
             this.Stack += stack;
@@ -53,6 +63,11 @@ namespace RpgCore
         public void Refill()
         {
             Stack = initStack;
+        }
+
+        public IEffect Clone()
+        {
+            return new TimeEffect(this);
         }
     }
 }

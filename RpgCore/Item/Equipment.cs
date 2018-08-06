@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RpgCore.Enum;
 using RpgCore.Inteface;
@@ -30,6 +31,17 @@ namespace RpgCore.Items
             Equiped = false;
         }
 
+
+        protected Equipment(Equipment anotherEquip)
+        {
+            this.id = anotherEquip.Id;
+            this.name = anotherEquip.Name;
+            this.description = anotherEquip.Description;
+            this.Slot = anotherEquip.Slot;
+            this.EquipEffects = new List<IEffect>(anotherEquip.EquipEffects);
+            this.Equiped = anotherEquip.Equiped;
+        }
+
         public void AddEquipEffect(IEffect effect)
         {
             if (!EquipEffects.Exists(x => x.TargetStat == effect.TargetStat))
@@ -49,15 +61,9 @@ namespace RpgCore.Items
         }
 
 
-        public IItem Copy()
+        public IItem Clone()
         {
-            return (Equipment)Clone();
-        }
-
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
+            return new Equipment(this);
         }
     }
 }

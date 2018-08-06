@@ -10,5 +10,7 @@ namespace RpgCore.Inteface
 
         void IncreastValue(float value);
         void ApplyEffect(IStat target);
+
+        IEffect Clone();
     }
 }

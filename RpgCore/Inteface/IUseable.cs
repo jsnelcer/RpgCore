@@ -1,7 +1,7 @@
 using RpgCore;
 using RpgCore.Inteface;
 
-public interface IUseable
+public interface IUseable<T>
 {
-    IEffect Use();
+    T Use();
 }

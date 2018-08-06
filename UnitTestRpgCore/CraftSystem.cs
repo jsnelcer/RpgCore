@@ -46,7 +46,7 @@ namespace UnitTestRpgCore
                 {coal, 4 }
             };
 
-            Receipt recept = new Receipt(new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand), materials);
+            Receipt recept = new Receipt(new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand), materials, 333, "Sword of Destiny Receipt", "Receipt for ultimate weapon");
 
             Assert.AreEqual(111, recept.Result.Id);
             Assert.AreEqual("sword of destiny", recept.Result.Name);
@@ -72,7 +72,7 @@ namespace UnitTestRpgCore
                 {coal, 4 }
             };
 
-            Receipt recept = new Receipt(new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand), materials);
+            Receipt recept = new Receipt(new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand), materials, 333, "Sword of Destiny Receipt", "Receipt for ultimate weapon");
 
             hero.PickUp(new Resources(11, "iron", "resource item"));
             hero.PickUp(new Resources(11, "iron", "resource item"));
@@ -103,24 +103,10 @@ namespace UnitTestRpgCore
                 {wood, 2 },
                 {coal, 4 }
             };
+            Equipment receipt_weapon = new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand);
 
-            Receipt recept = new Receipt(new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand), materials);
-
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-
-            hero.PickUp(new Resources(12, "wood", "resource item"));
-            hero.PickUp(new Resources(12, "wood", "resource item"));
-
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-
-            IItem newItem = recept.Craft(hero.Inventory);
-
-            ////////
+            receipt_weapon.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Luck, +20f));
+            Receipt recept = new Receipt(receipt_weapon, materials, 333, "Sword of Destiny Receipt", "Receipt for ultimate weapon");
 
             hero.PickUp(new Resources(11, "iron", "resource item"));
             hero.PickUp(new Resources(11, "iron", "resource item"));
@@ -134,18 +120,14 @@ namespace UnitTestRpgCore
             hero.PickUp(new Resources(13, "coal", "resource item"));
             hero.PickUp(new Resources(13, "coal", "resource item"));
 
-            IItem newItem_2 = recept.Craft(hero.Inventory);
-            ((Equipment)newItem_2).AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Health, 60f));
-            //////
+            hero.Craft(recept);
+            Assert.AreEqual(1, hero.Inventory.Items.Count);
 
-
-
-
+            IItem newItem = hero.Inventory.Items[0];
             Assert.AreEqual(111, newItem.Id);
             Assert.AreEqual("sword of destiny", newItem.Name);
             Assert.AreEqual("ultimate weapon", newItem.Description);
             Assert.AreEqual(EquipSlot.RightHand, ((Equipment)newItem).Slot);
-            Assert.AreEqual(0, hero.Inventory.Items.Count);
         }
     }
 }

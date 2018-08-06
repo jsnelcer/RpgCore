@@ -1,6 +1,6 @@
 ﻿using RpgCore.Enum;
-using System.Collections.Generic;     
-
+using System.Collections.Generic;
+using System;
 namespace RpgCore.Inteface
 {
     public interface IStat

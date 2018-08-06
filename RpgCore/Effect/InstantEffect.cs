@@ -24,6 +24,13 @@ namespace RpgCore
             this.value = _value;
         }
 
+        protected InstantEffect(InstantEffect anotherEffect)
+        {
+            this.target = anotherEffect.Target;
+            this.targetStat = anotherEffect.TargetStat;
+            this.value = anotherEffect.Value;
+        }
+
         public void ApplyEffect(IStat target)
         {
             target.ApplyInstantEffect(this);
@@ -32,6 +39,11 @@ namespace RpgCore
         public void IncreastValue(float _value)
         {
             value += _value;
+        }
+
+        public IEffect Clone()
+        {
+            return new InstantEffect(this);
         }
     }
 }

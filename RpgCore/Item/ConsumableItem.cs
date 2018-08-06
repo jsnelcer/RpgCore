@@ -1,10 +1,11 @@
 using RpgCore;
 using RpgCore.Enum;
 using RpgCore.Inteface;
+using System;
 
 namespace RpgCore.Items
 {
-    public class ConsumableItem : IItem, IUseable
+    public class ConsumableItem : IItem, IUseable<IEffect>
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -23,7 +24,15 @@ namespace RpgCore.Items
             this.description = description;
             this.Effect = value;
         }
-        
+
+        protected ConsumableItem(ConsumableItem anotherItem)
+        {
+            this.id = anotherItem.Id;
+            this.name = anotherItem.Name;
+            this.description = anotherItem.Description;
+            this.Effect = anotherItem.Effect.Clone();
+        }
+
         public void SetEffect(IEffect value)
         {
             if(Effect == null)
@@ -37,14 +46,9 @@ namespace RpgCore.Items
             return Effect;
         }
 
-        public IItem Copy()
+        public IItem Clone()
         {
-            return (ConsumableItem)Clone();
-        }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
+            return new ConsumableItem(this);
         }
     }
 }

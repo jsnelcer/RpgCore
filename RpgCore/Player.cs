@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RpgCore.Storaged;
+using RpgCore.Crafting;
 using RpgCore.Stats;
 using RpgCore.Items;
 using RpgCore.Enum;
@@ -43,7 +43,7 @@ namespace RpgCore
 
         private void UpdateStatsFromEquip() => StatsManager.EquipStats(Equip.Items);
 
-        public void UseItem(IUseable item)
+        public void UseItem(IUseable<IEffect> item)
         {
             IEffect eff = item.Use();
             StatsManager.ApplyEffect(eff);
@@ -99,6 +99,14 @@ namespace RpgCore
         public List<IItem> InventoryFilter(string contain)
         {
             return Inventory.Items.Where(x => x.Name.Contains(contain) || x.Description.Contains(contain)).ToList();
+        }
+
+        public void Craft(Receipt receipt)
+        {
+            if(receipt.CanCraft(this.Inventory))
+            {
+                Inventory.AddItem(receipt.Craft(this.Inventory));
+            }
         }
     }
 }

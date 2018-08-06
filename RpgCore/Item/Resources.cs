@@ -24,14 +24,16 @@ namespace RpgCore.Items
             this.description = description;
         }
 
-        public IItem Copy()
+        protected Resources(Resources anotherItem)
         {
-            return (Resources)Clone();
+            this.id = anotherItem.Id;
+            this.name = anotherItem.Name;
+            this.description = anotherItem.Description;
         }
 
-        public object Clone()
+        public IItem Clone()
         {
-            return this.MemberwiseClone();
+            return new Resources(this);
         }
     }
 }
