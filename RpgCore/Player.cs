@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using RpgCore.Crafting;
-using RpgCore.Stats;
+using RpgCore.StateMachine;
 using RpgCore.Items;
 using RpgCore.Enum;
 using RpgCore.Inteface;
 
 namespace RpgCore
 {
-    public class Player : ICharacter
+    public class Player : IFighter
     {
+        private int id { get; set; }
         private string description { get; set; }
         private string name { get; set; }
 
+        private StateMachineSystem stateMachine { get; set; }
+
+        public int Id => id;
         public string Name => name;
         public string Description => description;
 
+        public IState CurrentState => stateMachine.CurrentState;
         public IStorage<IItem> Inventory { get; private set; }
         public IStorage<ConsumableItem> QuickUse { get; private set; }
         public IStorage<IEquiped> Equip { get; private set; }
@@ -29,6 +34,7 @@ namespace RpgCore
 
         public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
+            this.id = 0;
             this.name = name;
             this.description = description;
 
@@ -107,6 +113,17 @@ namespace RpgCore
             {
                 Inventory.AddItem(receipt.Craft(this.Inventory));
             }
+        }
+
+        void IFighter.Attack(IFighter target)
+        {
+            List<IEffect> dmg = new List<IEffect>();
+            target.Hit(dmg);
+        }
+
+        public void Hit(List<IEffect> attack)
+        {
+            attack.ForEach(e => this.AddEffect(e));
         }
     }
 }

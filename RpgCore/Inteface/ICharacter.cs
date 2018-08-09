@@ -1,8 +1,9 @@
-﻿namespace RpgCore.Inteface
+﻿using RpgCore.StateMachine;
+
+namespace RpgCore.Inteface
 {
-    public interface ICharacter
+    public interface ICharacter : IEntity
     {
-        string Name { get; }
-        string Description { get; }
+        IState CurrentState { get; }
     }
 }

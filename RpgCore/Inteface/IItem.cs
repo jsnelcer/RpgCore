@@ -1,12 +1,7 @@
-﻿using System;
-namespace RpgCore.Inteface
+﻿namespace RpgCore.Inteface
 {
-    public interface IItem
+    public interface IItem : IEntity
     {
-        int Id { get; }
-        string Name { get; }
-        string Description { get; }
-
         IItem Clone();
     }
 }
