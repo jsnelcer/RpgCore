@@ -117,7 +117,7 @@ namespace UnitTestRpgCore
             helm_air.AddEquipEffect(helmEffect_health);
             helm_air.AddEquipEffect(helmEffect_energy);
             helm_air.AddEquipEffect(helmEffect_int);
-            hero.PickUp(helm_air);
+            hero.Interact(helm_air);
             hero.EquipItem(helm_air);
 
             Assert.AreEqual(helm_air.Equiped, true);

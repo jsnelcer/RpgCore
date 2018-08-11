@@ -1,4 +1,7 @@
-public interface IInteractable
+namespace RpgCore.Inteface
 {
-    void Interact();
+    public interface IInteractable
+    {
+        void Interact(ICharacter character);
+    }
 }

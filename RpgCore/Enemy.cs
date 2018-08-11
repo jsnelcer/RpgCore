@@ -1,39 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RpgCore.Crafting;
+using RpgCore.Inteface;
+using RpgCore.Enum;
 using RpgCore.StateMachine;
 using RpgCore.Items;
-using RpgCore.Enum;
-using RpgCore.Inteface;
 using RpgCore.Stats;
 
 namespace RpgCore
 {
-    public class Player : IFighter, ICharacter
+    public class Enemy : IEnemy
     {
-        private int id { get; set; }
-        private string description { get; set; }
-        private string name { get; set; }
+        public string Name => this.name;
+        public string Description => this.description;
+        public int Id => id;
 
         public StateMachineSystem StateMachine { get; private set; }
 
         public IState CurrentState => StateMachine.CurrentState;
+        private int id { get; set; }
+        private string description { get; set; }
+        private string name { get; set; }
 
-        public int Id => id;
-        public string Name => name;
-        public string Description => description;
 
         public IStorage<IItem> Inventory { get; private set; }
         public IStorage<ConsumableItem> QuickUse { get; private set; }
         public IStorage<IEquiped> Equip { get; private set; }
 
         private StatsManager StatsManager;
-        
+
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
 
-        public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
+        public Enemy(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
             this.id = 0;
             this.name = name;
@@ -41,24 +40,37 @@ namespace RpgCore
 
             StatsManager = new StatsManager(baseStats);
 
-            StateMachine = new StateMachineSystem();
-            StateMachine.ChangeState(new Idle(this));
-
             this.Inventory = inventory;
             this.QuickUse = quickUse;
             this.Equip = equip;
 
             EquipChange += UpdateStatsFromEquip;
+
+
+            StateMachine = new StateMachineSystem();
+            StateMachine.ChangeState(new Idle(this));
         }
-        
-        public void UseItem(IUseable<IEffect> item)
+
+        public void AddEffect(IEffect effect) => StatsManager.ApplyEffect(effect);
+
+        private void UpdateStatsFromEquip() => StatsManager.EquipStats(Equip.Items);
+
+        public override string ToString()
         {
-            IEffect eff = item.Use();
-            StatsManager.ApplyEffect(eff);
+            return this.Name + ": " + this.Description;
         }
-        
-        public void Interact(IInteractable entity) => entity.Interact(this);
-                
+
+        public List<IEntity> LookAround()
+        {
+            List<IEntity> result = new List<IEntity>();
+            return result;
+        }
+
+        private IEquiped GetItemFromSlot(EquipSlot slot)
+        {
+            return Equip.Items.Where(x => x.Slot == slot).FirstOrDefault();
+        }
+
         public void EquipItem(IEquiped item)
         {
             try
@@ -81,7 +93,7 @@ namespace RpgCore
                 throw (e);
             }
         }
-        
+
         public void FromEquipToInventory(IEquiped item)
         {
             try
@@ -95,26 +107,6 @@ namespace RpgCore
             }
             Inventory.AddItem(item);
         }
-        
-        public void AddEffect(IEffect effect) =>  StatsManager.ApplyEffect(effect);
-        
-        public void Update() => StatsManager.UpdateStats();
-
-        public IStat GetStat(StatType type) => StatsManager.GetStat(type);
-
-        public List<IItem> InventoryFilter(string contain)
-        {
-            return Inventory.Items.Where(x => x.Name.Contains(contain) || x.Description.Contains(contain)).ToList();
-        }
-
-        public void Craft(Receipt receipt)
-        {
-            if(receipt.CanCraft(this.Inventory))
-            {
-                Inventory.AddItem(receipt.Craft(this.Inventory));
-            }
-        }
-
         public void Attack(IFighter target)
         {
             if (target.Alive())
@@ -140,7 +132,9 @@ namespace RpgCore
                 StateMachine.Switch2PreviousState();
             }
         }
-        
+
+        public IStat GetStat(StatType type) => StatsManager.GetStat(type);
+
         public void Hit(List<IEffect> attack)
         {
             attack.ForEach(e => this.AddEffect(e));
@@ -150,18 +144,8 @@ namespace RpgCore
                 StateMachine.ChangeState(new Death(this));
             }
         }
-
-        public List<IEntity> LookAround()
+        public void Move()
         {
-            List<IEntity> result = new List<IEntity>();
-            return result;
-        }
-
-        private void UpdateStatsFromEquip() => StatsManager.EquipStats(Equip.Items);
-
-        private IEquiped GetItemFromSlot(EquipSlot slot)
-        {
-            return Equip.Items.Where(x=>x.Slot == slot).FirstOrDefault();
         }
 
         public bool Alive()

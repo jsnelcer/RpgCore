@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
+using RpgCore.Enum;
 using RpgCore.Inteface;
 
 namespace RpgCore.StateMachine
 {
     public class Attack : IState
     {
+        public StateType Type { get; private set; }
         IFighter owner;
         IFighter target;
 
         public Attack(IFighter actor, IFighter victim)
         {
+            Type = StateType.Attack;
             owner = actor;
-            victim = target;
+            target = victim;
         }
 
         public void Enter()
         {
+            Console.WriteLine("Charge!");
         }
 
         public void Execute()
@@ -26,7 +29,7 @@ namespace RpgCore.StateMachine
 
         public void Exit()
         {
-            
+            Console.WriteLine("End Attack");
         }
     }
 }

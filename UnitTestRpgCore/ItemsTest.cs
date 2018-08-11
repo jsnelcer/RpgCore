@@ -86,9 +86,9 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void AddItemsToInventory()
         {
-            hero.PickUp(helm);
-            hero.PickUp(healthPotion);
-            hero.PickUp(iron);
+            hero.Interact(helm);
+            hero.Interact(healthPotion);
+            hero.Interact(iron);
 
             Assert.AreEqual(hero.Inventory.Items.Count, 3);
 
@@ -100,14 +100,14 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void ChangeEquip()
         {
-            hero.PickUp(helm);
+            hero.Interact(helm);
             hero.EquipItem(helm);
 
             Assert.AreEqual(hero.Inventory.Items.Count, 0);
             Assert.AreEqual(hero.Equip.Items.Where(x => x.Slot == EquipSlot.Head).FirstOrDefault(), helm);
 
-            IEquiped helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
-            hero.PickUp(helm_air);
+            Equipment helm_air = new Equipment(997, "helm of air", "air", EquipSlot.Head);
+            hero.Interact(helm_air);
 
             Assert.AreEqual(helm.Equiped, true);
             Assert.AreEqual(helm_air.Equiped, false);

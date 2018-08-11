@@ -6,7 +6,7 @@ using RpgCore.Inteface;
 
 namespace RpgCore.Items
 {
-    public class Equipment : IEquiped
+    public class Equipment : IEquiped, IInteractable
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -64,6 +64,11 @@ namespace RpgCore.Items
         public IItem Clone()
         {
             return new Equipment(this);
+        }
+
+        public void Interact(ICharacter character)
+        {
+            character.Inventory.AddItem(this);
         }
     }
 }

@@ -5,7 +5,7 @@ using System;
 
 namespace RpgCore.Items
 {
-    public class ConsumableItem : IItem, IUseable<IEffect>
+    public class ConsumableItem : IItem, IUseable<IEffect>, IInteractable
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -49,6 +49,11 @@ namespace RpgCore.Items
         public IItem Clone()
         {
             return new ConsumableItem(this);
+        }
+
+        public void Interact(ICharacter character)
+        {
+            character.Inventory.AddItem(this);
         }
     }
 }

@@ -6,7 +6,7 @@ using RpgCore.Items;
 
 namespace RpgCore.Items
 {
-    public class Resources : IItem
+    public class Resources : IItem, IInteractable
     {
 
         private int id { get; set; }
@@ -34,6 +34,11 @@ namespace RpgCore.Items
         public IItem Clone()
         {
             return new Resources(this);
+        }
+
+        public void Interact(ICharacter character)
+        {
+            character.Inventory.AddItem(this);
         }
     }
 }

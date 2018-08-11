@@ -74,17 +74,17 @@ namespace UnitTestRpgCore
 
             Receipt recept = new Receipt(new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand), materials, 333, "Sword of Destiny Receipt", "Receipt for ultimate weapon");
 
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-            hero.PickUp(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
 
-            hero.PickUp(new Resources(12, "wood", "resource item"));
-            hero.PickUp(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
 
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
 
             Assert.AreEqual(true, recept.CanCraft(hero.Inventory));
         }
@@ -108,17 +108,17 @@ namespace UnitTestRpgCore
             receipt_weapon.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Luck, +20f));
             Receipt recept = new Receipt(receipt_weapon, materials, 333, "Sword of Destiny Receipt", "Receipt for ultimate weapon");
 
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-            hero.PickUp(new Resources(11, "iron", "resource item"));
-            hero.PickUp(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
 
-            hero.PickUp(new Resources(12, "wood", "resource item"));
-            hero.PickUp(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
 
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
-            hero.PickUp(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
 
             hero.Craft(recept);
             Assert.AreEqual(1, hero.Inventory.Items.Count);
