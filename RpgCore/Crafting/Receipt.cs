@@ -43,7 +43,7 @@ namespace RpgCore.Crafting
             bool craft = true;
             Materials.ToList().ForEach(material =>
             {
-                if (storage.Items.Where(x => x.Id == material.Key.Id).Count() != material.Value)
+                if (storage.Items.Where(x => x.Id == material.Key.Id).Count() < material.Value)
                 {
                     craft = false;
                     return;
@@ -59,9 +59,14 @@ namespace RpgCore.Crafting
             {
                 Materials.ToList().ForEach(material =>
                 {
-                    if (storage.Items.Where(x => x.Id == material.Key.Id).Count() == material.Value)
+                    if (storage.Items.Where(x => x.Id == material.Key.Id).Count() >= material.Value)
                     {
-                        storage.Items.RemoveAll(x => x.Id == material.Key.Id);
+                        var usedItems = storage.Items.Where(x => x.Id == material.Key.Id).Take(material.Value).ToList();
+                        usedItems.ForEach(item =>
+                        {
+                            storage.RemoveItem(item);
+                        });
+                        
                     }
                 });
                 IItem clon = Result.Clone();

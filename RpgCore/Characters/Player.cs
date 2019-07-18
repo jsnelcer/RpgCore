@@ -168,5 +168,16 @@ namespace RpgCore
         {
             return CurrentState.Type != StateType.Death;
         }
+
+        List<IInteractable> ICharacter.LookAround()
+        {
+            List<IInteractable> result = new List<IInteractable>();
+            return result;
+        }
+
+        public void AddToInventory(IItem item)
+        {
+            Inventory.AddItem(item);
+        }
     }
 }

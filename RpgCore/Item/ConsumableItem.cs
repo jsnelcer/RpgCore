@@ -53,7 +53,7 @@ namespace RpgCore.Items
 
         public void Interact(ICharacter character)
         {
-            character.Inventory.AddItem(this);
+            character.AddToInventory(this);
         }
     }
 }
