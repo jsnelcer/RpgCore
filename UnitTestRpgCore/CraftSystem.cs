@@ -111,7 +111,10 @@ namespace UnitTestRpgCore
             hero.Interact(new Resources(11, "iron", "resource item"));
             hero.Interact(new Resources(11, "iron", "resource item"));
             hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
 
+            hero.Interact(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
             hero.Interact(new Resources(12, "wood", "resource item"));
             hero.Interact(new Resources(12, "wood", "resource item"));
 
@@ -121,9 +124,13 @@ namespace UnitTestRpgCore
             hero.Interact(new Resources(13, "coal", "resource item"));
 
             hero.Craft(recept);
-            Assert.AreEqual(1, hero.Inventory.Items.Count);
+            Assert.AreEqual(4, hero.Inventory.Items.Count);
 
-            IItem newItem = hero.Inventory.Items[0];
+            Assert.AreEqual(2, hero.Inventory.Items.Where(item => item.Id == 12).Count());
+            Assert.AreEqual(1, hero.Inventory.Items.Where(item => item.Id == 11).Count());
+            Assert.AreEqual(0, hero.Inventory.Items.Where(item => item.Id == 13).Count());
+
+            IItem newItem = hero.Inventory.Items.Where(item => item.GetType() != typeof(Resources)).FirstOrDefault();
             Assert.AreEqual(111, newItem.Id);
             Assert.AreEqual("sword of destiny", newItem.Name);
             Assert.AreEqual("ultimate weapon", newItem.Description);
