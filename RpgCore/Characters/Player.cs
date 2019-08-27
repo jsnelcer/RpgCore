@@ -5,7 +5,7 @@ using RpgCore.Crafting;
 using RpgCore.StateMachine;
 using RpgCore.Items;
 using RpgCore.Enum;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 using RpgCore.Stats;
 
 namespace RpgCore

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using RpgCore.Enum;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 using RpgCore.Items;
 
 namespace RpgCore.Items

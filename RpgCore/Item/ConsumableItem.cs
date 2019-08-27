@@ -1,6 +1,6 @@
 using RpgCore;
 using RpgCore.Enum;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 using System;
 
 namespace RpgCore.Items

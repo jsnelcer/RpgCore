@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 using RpgCore.Enum;
 using RpgCore.StateMachine;
 using RpgCore.Items;

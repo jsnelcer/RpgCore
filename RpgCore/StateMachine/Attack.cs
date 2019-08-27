@@ -1,6 +1,6 @@
 ﻿using System;
 using RpgCore.Enum;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 
 namespace RpgCore.StateMachine
 {

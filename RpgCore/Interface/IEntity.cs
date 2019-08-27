@@ -1,4 +1,4 @@
-﻿namespace RpgCore.Inteface
+﻿namespace RpgCore.Interface
 {
     public interface IEntity
     {

@@ -1,4 +1,4 @@
-﻿using RpgCore.Inteface;
+﻿using RpgCore.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

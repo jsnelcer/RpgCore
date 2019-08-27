@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RpgCore.Enum;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 
 namespace RpgCore.Stats
 {
