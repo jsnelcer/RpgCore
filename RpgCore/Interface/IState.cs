@@ -1,6 +1,6 @@
 ﻿using RpgCore.Enum;
 
-namespace RpgCore.Inteface
+namespace RpgCore.Interface
 {
     public interface IState
     {
@@ -12,5 +12,4 @@ namespace RpgCore.Inteface
 
         void Exit();
     }
-
 }

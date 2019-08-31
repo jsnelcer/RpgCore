@@ -1,6 +1,6 @@
 ﻿using RpgCore.StateMachine;
 
-namespace RpgCore.Inteface
+namespace RpgCore.Interface
 {
     public interface IEnemy : IFighter, INpc
     {

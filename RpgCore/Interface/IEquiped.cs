@@ -1,6 +1,6 @@
 ﻿using RpgCore.Enum;
 using System.Collections.Generic;
-namespace RpgCore.Inteface
+namespace RpgCore.Interface
 {
     public interface IEquiped : IItem
     {

@@ -3,7 +3,7 @@ using RpgCore.Enum;
 using RpgCore.Items;
 using RpgCore.Stats;
 using RpgCore.Storaged;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 using RpgCore;
 using System.Collections.Generic;
 using System.Linq;

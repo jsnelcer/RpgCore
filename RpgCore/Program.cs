@@ -5,7 +5,7 @@ using RpgCore.Items;
 using RpgCore.StateMachine;
 using RpgCore.Stats;
 using System.Collections.Generic;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 
 namespace RpgCore
 {

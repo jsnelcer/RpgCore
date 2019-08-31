@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using RpgCore.Inteface;
+using RpgCore.Interface;
 using RpgCore.Enum;
 
 namespace RpgCore.StateMachine

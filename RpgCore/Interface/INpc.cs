@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RpgCore.Inteface
+namespace RpgCore.Interface
 {
     public interface INpc : ICharacter
     {

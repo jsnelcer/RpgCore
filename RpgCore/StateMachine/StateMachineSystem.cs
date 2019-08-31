@@ -1,4 +1,4 @@
-﻿using RpgCore.Inteface;
+﻿using RpgCore.Interface;
 
 namespace RpgCore.StateMachine
 {
