@@ -13,8 +13,9 @@ namespace RpgCore.Interface
         bool Active { get; }
         bool IsComplete();   
 
-        void Reward(ICharacter character);
-
+        void Reward(IQuestCompleter character);
         string GetConditions();
+        void AcceptQuest(IQuestCompleter character);
+        void UpdateQuest(object sender);
     }
 }

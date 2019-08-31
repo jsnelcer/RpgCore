@@ -23,7 +23,7 @@ namespace RpgCore.Quest
             Goal = goal;
         }
 
-        private void UpdateValue()
+        public void UpdateValue()
         {
             Current++;
         }
@@ -36,6 +36,19 @@ namespace RpgCore.Quest
         public override bool IsComplete()
         {
             return Current >= Goal;
+        }
+
+        public override void AcceptQuest(IQuestCompleter character)
+        {
+            base.AcceptQuest(character);
+        }
+
+        public override void UpdateQuest(object enemy)
+        {
+            if ((IEnemy)enemy == Target)
+            {
+                Current++;
+            }
         }
     }
 }

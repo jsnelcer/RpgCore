@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RpgCore.Interface
 {
+
     public interface IFighter
     {
-        void Attack(IFighter target);
+        void Attack(IEnemy target);
         void Hit(List<IEffect> dmg);
         bool Alive();
     }

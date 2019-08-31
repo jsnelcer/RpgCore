@@ -7,6 +7,7 @@ using RpgCore.Items;
 using RpgCore.Enum;
 using RpgCore.Interface;
 using RpgCore.Stats;
+using RpgCore.Quest;
 
 namespace RpgCore
 {
@@ -27,11 +28,15 @@ namespace RpgCore
         public IStorage<IItem> Inventory { get; private set; }
         public IStorage<ConsumableItem> QuickUse { get; private set; }
         public IStorage<IEquiped> Equip { get; private set; }
-
+        
         private StatsManager StatsManager;
+        private List<IQuest> QuestList;
         
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
+
+        public delegate void KillEnemyEvent(IFighter target);
+        public static event KillEnemyEvent KillEnemy;
 
         public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
@@ -40,6 +45,7 @@ namespace RpgCore
             this.description = description;
 
             StatsManager = new StatsManager(baseStats);
+            QuestList = new List<IQuest>();
 
             StateMachine = new StateMachineSystem();
             StateMachine.ChangeState(new Idle(this));
@@ -115,7 +121,7 @@ namespace RpgCore
             }
         }
 
-        public void Attack(IFighter target)
+        public void Attack(IEnemy target)
         {
             if (target.Alive())
             {
@@ -137,6 +143,7 @@ namespace RpgCore
             }
             else
             {
+                KillEnemy?.Invoke(target);
                 StateMachine.Switch2PreviousState();
             }
         }
@@ -183,6 +190,15 @@ namespace RpgCore
         public void UpgradeStat(IStat stat)
         {
             StatsManager.UpgradeStat(stat);
+        }
+
+        public void AddQuest(IQuest quest)
+        {
+            QuestList.Add(quest);
+            if(quest.Type == QuestType.Kill)
+            {
+                KillEnemy += quest.UpdateQuest;
+            }
         }
     }
 }

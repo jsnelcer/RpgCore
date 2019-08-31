@@ -107,7 +107,7 @@ namespace RpgCore
             }
             Inventory.AddItem(item);
         }
-        public void Attack(IFighter target)
+        public void Attack(IEnemy target)
         {
             if (target.Alive())
             {
@@ -167,6 +167,11 @@ namespace RpgCore
         public void UpgradeStat(IStat stat)
         {
             StatsManager.UpgradeStat(stat);
+        }
+
+        public void AddQuest(IQuest quest)
+        {
+            // toto? :)
         }
     }
 }

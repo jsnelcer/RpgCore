@@ -33,7 +33,7 @@ namespace RpgCore.Quest
 
         public abstract string GetConditions();
 
-        public virtual void Reward(ICharacter character)
+        public virtual void Reward(IQuestCompleter character)
         {
             Items.ForEach (item => {
                 character.AddToInventory(item);
@@ -44,6 +44,13 @@ namespace RpgCore.Quest
                 character.UpgradeStat(stat);
             });
         }
+        
+        public virtual void AcceptQuest(IQuestCompleter character)
+        {
+            Active = true;
+            character.AddQuest(this);
+        }
 
+        public abstract void UpdateQuest(object sender);
     }
 }
