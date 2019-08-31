@@ -11,6 +11,8 @@ namespace RpgCore.Interface
         
         void AddToInventory(IItem item);
         void UpgradeStat(IStat stat);
+
         void AddQuest(IQuest quest);
+        bool CompleteQuest(IQuest quest);
     }
 }

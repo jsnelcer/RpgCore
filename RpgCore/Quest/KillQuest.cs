@@ -38,14 +38,15 @@ namespace RpgCore.Quest
             return Current >= Goal;
         }
 
-        public override void AcceptQuest(IQuestCompleter character)
+        public override void AcceptQuest(IFighter character)
         {
             base.AcceptQuest(character);
         }
 
-        public override void UpdateQuest(object enemy)
+        public override void UpdateQuest(object sender)
         {
-            if ((IEnemy)enemy == Target)
+            IFighter enemy = (IFighter)sender;
+            if (enemy.Name == Target.Name && enemy.Description == Target.Description)
             {
                 Current++;
             }

@@ -73,7 +73,7 @@ namespace RpgCore.Stats
 
         public void UpgradeStat(float value)
         {
-            value += value;
+            this.value += value;
         }
     }
 }

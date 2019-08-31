@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace RpgCore.Interface
 {
 
-    public interface IFighter
+    public interface IFighter : ICharacter
     {
-        void Attack(IEnemy target);
+        void Attack(IFighter target);
         void Hit(List<IEffect> dmg);
         bool Alive();
     }

@@ -12,7 +12,7 @@ namespace RpgCore.Quest
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public bool Active { get; set; }
+        public bool Active { get; protected set; }
         public List<IItem> Items { get; set; }
         public List<IStat> Stats { get; set; }
 
@@ -33,7 +33,7 @@ namespace RpgCore.Quest
 
         public abstract string GetConditions();
 
-        public virtual void Reward(IQuestCompleter character)
+        public virtual void Reward(IFighter character)
         {
             Items.ForEach (item => {
                 character.AddToInventory(item);
@@ -45,12 +45,26 @@ namespace RpgCore.Quest
             });
         }
         
-        public virtual void AcceptQuest(IQuestCompleter character)
+        public virtual void AcceptQuest(IFighter character)
         {
             Active = true;
             character.AddQuest(this);
         }
 
         public abstract void UpdateQuest(object sender);
+
+        public virtual bool CompleteQuest(IFighter character)
+        {
+            if(Active && IsComplete())
+            {
+                Reward(character);
+                Active = false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

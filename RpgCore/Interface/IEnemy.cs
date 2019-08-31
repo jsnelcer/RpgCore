@@ -2,7 +2,7 @@
 
 namespace RpgCore.Interface
 {
-    public interface IEnemy : IFighter, INpc
+    public interface IEnemy : IFighter
     {
         StateMachineSystem StateMachine { get; }
         IState CurrentState { get; }

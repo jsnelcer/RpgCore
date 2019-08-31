@@ -11,7 +11,7 @@ using RpgCore.Quest;
 
 namespace RpgCore
 {
-    public class Player : IFighter, ICharacter
+    public class Player : IFighter
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -30,7 +30,7 @@ namespace RpgCore
         public IStorage<IEquiped> Equip { get; private set; }
         
         private StatsManager StatsManager;
-        private List<IQuest> QuestList;
+        public List<IQuest> QuestList;
         
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
@@ -121,7 +121,7 @@ namespace RpgCore
             }
         }
 
-        public void Attack(IEnemy target)
+        public void Attack(IFighter target)
         {
             if (target.Alive())
             {
@@ -140,10 +140,14 @@ namespace RpgCore
                 }
 
                 target.Hit(dmg);
+
+                if(!target.Alive())
+                {
+                    KillEnemy?.Invoke(target);
+                }
             }
             else
             {
-                KillEnemy?.Invoke(target);
                 StateMachine.Switch2PreviousState();
             }
         }
@@ -195,10 +199,26 @@ namespace RpgCore
         public void AddQuest(IQuest quest)
         {
             QuestList.Add(quest);
+
             if(quest.Type == QuestType.Kill)
             {
                 KillEnemy += quest.UpdateQuest;
             }
+        }
+
+        public bool CompleteQuest(IQuest quest)
+        {
+            bool result = quest.CompleteQuest(this);
+
+            if (result)
+            {
+                if (quest.Type == QuestType.Kill)
+                {
+                    KillEnemy -= quest.UpdateQuest;
+                }
+            }
+
+            return result;
         }
     }
 }

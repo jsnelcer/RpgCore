@@ -107,7 +107,7 @@ namespace RpgCore
             }
             Inventory.AddItem(item);
         }
-        public void Attack(IEnemy target)
+        public void Attack(IFighter target)
         {
             if (target.Alive())
             {
@@ -146,6 +146,7 @@ namespace RpgCore
         }
         public void Move()
         {
+            #warning rly need this?
         }
 
         public bool Alive()
@@ -171,7 +172,13 @@ namespace RpgCore
 
         public void AddQuest(IQuest quest)
         {
-            // toto? :)
+            #warning rly need this?
+        }
+
+        public bool CompleteQuest(IQuest quest)
+        {
+            #warning rly need this?
+            return false;
         }
     }
 }
