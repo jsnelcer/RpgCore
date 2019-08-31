@@ -33,10 +33,7 @@ namespace RpgCore.StateMachine
         public void Switch2PreviousState()
         {
             this.currentlyRunningState.Exit();
-            if (this.previousState != null)
-            {
-                this.currentlyRunningState = this.previousState;
-            }
+            this.currentlyRunningState = this.previousState;
             this.currentlyRunningState.Enter();
         }
     }

@@ -19,7 +19,9 @@ namespace RpgCore.StateMachine
 
         public void Enter()
         {
+#if Debug
             Console.WriteLine("Charge!");
+#endif
         }
 
         public void Execute()
@@ -29,7 +31,9 @@ namespace RpgCore.StateMachine
 
         public void Exit()
         {
+#if Debug
             Console.WriteLine("End Attack");
+#endif
         }
     }
 }

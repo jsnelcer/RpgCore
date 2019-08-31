@@ -157,11 +157,18 @@ namespace RpgCore
         
         public void Hit(List<IEffect> attack)
         {
-            attack.ForEach(e => this.AddEffect(e));
-            Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
-            if (GetStat(StatType.Health).Value <= 0 && CurrentState.Type != StateType.Death)
+            if (CurrentState.Type != StateType.Death)
             {
-                StateMachine.ChangeState(new Death(this));
+                attack.ForEach(e => this.AddEffect(e));
+
+#if Debug
+                Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
+#endif
+
+                if (GetStat(StatType.Health).Value <= 0)
+                {
+                    StateMachine.ChangeState(new Death(this));
+                }
             }
         }
 
@@ -229,7 +236,6 @@ namespace RpgCore
 
             if (result)
             {
-
                 switch (quest.Type)
                 {
                     case QuestType.Kill:
