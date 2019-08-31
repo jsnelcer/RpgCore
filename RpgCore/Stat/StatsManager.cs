@@ -75,6 +75,12 @@ namespace RpgCore
                 });
         }
 
+        public void UpgradeStat(IStat upgradeStat)
+        {
+            IStat stat = GetStat(upgradeStat.Type);
+            stat.UpgradeStat(upgradeStat.Value);
+        }
+
         private void RemoveEquipEffects()
         {
             Stats.ForEach(x => x.RemoveEquipEffects());

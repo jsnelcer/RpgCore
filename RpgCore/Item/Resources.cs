@@ -6,7 +6,7 @@ using RpgCore.Items;
 
 namespace RpgCore.Items
 {
-    public class Resources : IItem, IInteractable
+    public class Resources : IItem
     {
 
         private int id { get; set; }

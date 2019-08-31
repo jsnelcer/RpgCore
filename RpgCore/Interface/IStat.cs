@@ -9,6 +9,7 @@ namespace RpgCore.Interface
         float Value { get; }
         List<IEffect> Modifiers { get; }
 
+        void UpgradeStat(float value);
         void ApplyInstantEffect(InstantEffect effectValue);
         void DurationEffectStep(TimeEffect effectValue);
         void DurationEffectEnd(TimeEffect effectValue);

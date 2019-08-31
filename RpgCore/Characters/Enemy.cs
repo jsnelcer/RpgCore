@@ -146,6 +146,7 @@ namespace RpgCore
         }
         public void Move()
         {
+            #warning rly need this?
         }
 
         public bool Alive()
@@ -162,6 +163,27 @@ namespace RpgCore
         public void AddToInventory(IItem item)
         {
             Inventory.AddItem(item);
+        }
+
+        public void UpgradeStat(IStat stat)
+        {
+            StatsManager.UpgradeStat(stat);
+        }
+
+        public void AddQuest(IQuest quest)
+        {
+            #warning rly need this?
+        }
+
+        public bool CompleteQuest(IQuest quest)
+        {
+            #warning rly need this?
+            return false;
+        }
+
+        public List<IItem> GetInventory()
+        {
+            return Inventory.Items;
         }
     }
 }

@@ -8,6 +8,12 @@ namespace RpgCore.Interface
         string Description { get; }
 
         List<IInteractable> LookAround();
+        List<IItem> GetInventory();
+        
         void AddToInventory(IItem item);
+        void UpgradeStat(IStat stat);
+
+        void AddQuest(IQuest quest);
+        bool CompleteQuest(IQuest quest);
     }
 }

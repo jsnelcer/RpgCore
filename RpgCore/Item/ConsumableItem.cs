@@ -5,7 +5,7 @@ using System;
 
 namespace RpgCore.Items
 {
-    public class ConsumableItem : IItem, IUseable<IEffect>, IInteractable
+    public class ConsumableItem : IItem, IUseable<IEffect>
     {
         private int id { get; set; }
         private string description { get; set; }

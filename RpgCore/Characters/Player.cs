@@ -7,10 +7,11 @@ using RpgCore.Items;
 using RpgCore.Enum;
 using RpgCore.Interface;
 using RpgCore.Stats;
+using RpgCore.Quest;
 
 namespace RpgCore
 {
-    public class Player : IFighter, ICharacter
+    public class Player : IFighter
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -27,11 +28,18 @@ namespace RpgCore
         public IStorage<IItem> Inventory { get; private set; }
         public IStorage<ConsumableItem> QuickUse { get; private set; }
         public IStorage<IEquiped> Equip { get; private set; }
-
+        
         private StatsManager StatsManager;
+        public List<IQuest> QuestList;
         
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
+
+        public delegate void KillEnemyEvent(IFighter target);
+        public static event KillEnemyEvent KillEnemy;
+
+        public delegate void PickItemEvent(IItem item);
+        public static event PickItemEvent PickItem;
 
         public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
@@ -40,6 +48,7 @@ namespace RpgCore
             this.description = description;
 
             StatsManager = new StatsManager(baseStats);
+            QuestList = new List<IQuest>();
 
             StateMachine = new StateMachineSystem();
             StateMachine.ChangeState(new Idle(this));
@@ -134,6 +143,11 @@ namespace RpgCore
                 }
 
                 target.Hit(dmg);
+
+                if(!target.Alive())
+                {
+                    KillEnemy?.Invoke(target);
+                }
             }
             else
             {
@@ -177,7 +191,70 @@ namespace RpgCore
 
         public void AddToInventory(IItem item)
         {
+            PickItem?.Invoke(item);
             Inventory.AddItem(item);
+        }
+
+        public void UpgradeStat(IStat stat)
+        {
+            StatsManager.UpgradeStat(stat);
+        }
+
+        public void AddQuest(IQuest quest)
+        {
+            QuestList.Add(quest);
+
+            switch (quest.Type)
+            {
+                case QuestType.Kill:
+                    KillEnemy += quest.UpdateQuest;
+                    break;
+                case QuestType.Delivery:
+                    break;
+                case QuestType.Gather:
+                    PickItem += quest.UpdateQuest;
+                    break;
+                case QuestType.Escort:
+                    break;
+                case QuestType.Craft:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public bool CompleteQuest(IQuest quest)
+        {
+            bool result = quest.CompleteQuest(this);
+
+            if (result)
+            {
+
+                switch (quest.Type)
+                {
+                    case QuestType.Kill:
+                        KillEnemy -= quest.UpdateQuest;
+                        break;
+                    case QuestType.Delivery:
+                        break;
+                    case QuestType.Gather:
+                        PickItem -= quest.UpdateQuest;
+                        break;
+                    case QuestType.Escort:
+                        break;
+                    case QuestType.Craft:
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+        public List<IItem> GetInventory()
+        {
+            return Inventory.Items;
         }
     }
 }
