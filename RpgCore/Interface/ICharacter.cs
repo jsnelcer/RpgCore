@@ -6,8 +6,9 @@ namespace RpgCore.Interface
     {
         string Name { get; }
         string Description { get; }
-        
+
         List<IInteractable> LookAround();
+        List<IItem> GetInventory();
         
         void AddToInventory(IItem item);
         void UpgradeStat(IStat stat);

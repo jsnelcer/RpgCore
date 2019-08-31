@@ -6,31 +6,26 @@ using System.Text;
 
 namespace RpgCore.Quest
 {
-    public class KillQuest : Quest
+    public class QuestGather : Quest
     {
         private int Goal { get; set; }
         private int Current { get; set; }
-        private IEnemy Target { get; set; }
+        private IItem Target { get; set; }
 
-        public KillQuest(
-            int id, string title, string description, 
+        public QuestGather(
+            int id, string title, string description,
             List<IItem> items, List<IStat> stats,
-            IEnemy target, int goal
-            ): base(QuestType.Kill, id, title, description, items, stats)
+            IItem target, int goal
+            ) : base(QuestType.Gather, id, title, description, items, stats)
         {
             Target = target;
             Current = 0;
             Goal = goal;
         }
 
-        public void UpdateValue()
-        {
-            Current++;
-        }
-
         public override string GetConditions()
         {
-            return $"Kill {Target.Name}: {Current}/{Goal}";
+            return $"Find {Target.Name}: {Current}/{Goal}";
         }
 
         public override bool IsComplete()
@@ -41,12 +36,13 @@ namespace RpgCore.Quest
         public override void AcceptQuest(IFighter character)
         {
             base.AcceptQuest(character);
+            Current = character.GetInventory().FindAll(item => item.Id == Target.Id).Count;
         }
 
         public override void UpdateQuest(object sender)
         {
-            IFighter enemy = (IFighter)sender;
-            if (enemy.Name == Target.Name && enemy.Description == Target.Description)
+            IItem item = (IItem)sender;
+            if (item.Id == Target.Id)
             {
                 Current++;
             }

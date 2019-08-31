@@ -25,13 +25,18 @@ namespace RpgCore.StateMachine
         {
             var runningState = this.currentlyRunningState;
             if (runningState != null)
+            {
                 this.currentlyRunningState.Execute();
+            }
         }
 
         public void Switch2PreviousState()
         {
             this.currentlyRunningState.Exit();
-            this.currentlyRunningState = this.previousState;
+            if (this.previousState != null)
+            {
+                this.currentlyRunningState = this.previousState;
+            }
             this.currentlyRunningState.Enter();
         }
     }

@@ -180,5 +180,10 @@ namespace RpgCore
             #warning rly need this?
             return false;
         }
+
+        public List<IItem> GetInventory()
+        {
+            return Inventory.Items;
+        }
     }
 }

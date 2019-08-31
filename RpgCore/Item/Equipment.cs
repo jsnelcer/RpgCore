@@ -6,7 +6,7 @@ using RpgCore.Interface;
 
 namespace RpgCore.Items
 {
-    public class Equipment : IEquiped, IInteractable
+    public class Equipment : IEquiped
     {
         private int id { get; set; }
         private string description { get; set; }

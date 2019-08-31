@@ -23,6 +23,12 @@ namespace UnitTestRpgCore
         IEnemy enemy_3;
         IEnemy enemy_4;
 
+        IItem item_0;
+        IItem item_1;
+        IItem item_2;
+        IItem item_3;
+        IItem item_4;
+
         List<IItem> itemReward;
         List<IStat> statReward;
 
@@ -48,11 +54,21 @@ namespace UnitTestRpgCore
                 new Stat(1f, StatType.Luck)
             };
 
+            #region Enemy
             enemy_0 = new Enemy("Orc", "ver. 3.3", orc_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
             enemy_1 = new Enemy("Orc", "ver. 3.3", orc_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
             enemy_2 = new Enemy("Orc", "ver. 3.3", orc_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
             enemy_3 = new Enemy("Orc", "ver. 3.3", orc_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
             enemy_4 = new Enemy("Orc", "ver. 3.3", orc_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            #endregion
+
+            #region Items
+            item_0 = new Resources(11, "iron", "resource item");
+            item_1 = new Resources(11, "iron", "resource item");
+            item_2 = new Resources(11, "iron", "resource item");
+            item_3 = new Resources(11, "iron", "resource item");
+            item_4 = new Resources(11, "iron", "resource item");
+            #endregion
 
             hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
@@ -73,13 +89,29 @@ namespace UnitTestRpgCore
         }
 
         [TestMethod]
+        public void AcceptManyQuestsTest()
+        {
+            IQuest quest_gather = new QuestGather(1, "Welcome part 2", "Second Quest", itemReward, statReward, item_0, 5);
+            IQuest quest_kill = new QuestKill(1, "Welcome part 1", "First Quest", itemReward, statReward, enemy_0, 5);
+
+            quest_gather.AcceptQuest(hero);
+            quest_kill.AcceptQuest(hero);
+
+            Assert.AreEqual(2, hero.QuestList.Count);
+            Assert.AreEqual(true, quest_gather.Active);
+            Assert.AreEqual(true, quest_kill.Active);
+        }
+
+        #region Quest Kill
+
+        [TestMethod]
         public void CreateKillQuestTest()
         {
-            IQuest quest = new KillQuest(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
+            IQuest quest = new QuestKill(1, "Welcome part 1", "First Quest", itemReward, statReward, enemy_0, 5);
 
             Assert.AreEqual(1, quest.Id);
             
-            Assert.AreEqual("Welcome", quest.Title);
+            Assert.AreEqual("Welcome part 1", quest.Title);
             Assert.AreEqual("First Quest", quest.Description);
             Assert.AreEqual(1, quest.Items.Count);
             Assert.AreEqual(1, quest.Items[0].Id);
@@ -92,7 +124,7 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void AcceptKillQuestTest()
         {
-            IQuest quest = new KillQuest(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
+            IQuest quest = new QuestKill(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
             quest.AcceptQuest(hero);
 
             Assert.AreEqual(1, hero.QuestList.Count);
@@ -104,22 +136,28 @@ namespace UnitTestRpgCore
         [TestMethod]
         public void UpdateKillQuestTest()
         {
-            IQuest quest = new KillQuest(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
+            IQuest quest = new QuestKill(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
             quest.AcceptQuest(hero);
 
             Assert.AreEqual(true, quest.Active);
             Assert.AreEqual(false, quest.IsComplete());
             
-            hero.Attack(enemy_1);
+            hero.Attack(enemy_0);
             Assert.AreEqual($"Kill Orc: 1/5", quest.GetConditions());
-
+            hero.Attack(enemy_1);
+            Assert.AreEqual($"Kill Orc: 2/5", quest.GetConditions());
+            hero.Attack(enemy_2);
+            Assert.AreEqual($"Kill Orc: 3/5", quest.GetConditions());
+            hero.Attack(enemy_3);
+            Assert.AreEqual($"Kill Orc: 4/5", quest.GetConditions());
+            
             Assert.AreEqual(false, hero.CompleteQuest(quest));
         }
 
         [TestMethod]
         public void CompleteKillQuestTest()
         {
-            IQuest quest = new KillQuest(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
+            IQuest quest = new QuestKill(1, "Welcome", "First Quest", itemReward, statReward, enemy_0, 5);
             quest.AcceptQuest(hero);
 
             Assert.AreEqual(true, quest.Active);
@@ -140,7 +178,90 @@ namespace UnitTestRpgCore
             Assert.AreEqual(105f, ((RegenerationStat)hero.GetStat(StatType.Stamina)).MaxValue);
             Assert.AreEqual(32f, hero.GetStat(StatType.Intelligence).Value);
             Assert.AreEqual(51f, hero.GetStat(StatType.Luck).Value);
-            
         }
+
+        #endregion
+
+        #region Quest Gather
+
+        [TestMethod]
+        public void CreateGatherQuestTest()
+        {
+            IQuest quest = new QuestGather(1, "Welcome part 2", "Second Quest", itemReward, statReward, item_0, 5);
+
+            Assert.AreEqual(1, quest.Id);
+
+            Assert.AreEqual("Welcome part 2", quest.Title);
+            Assert.AreEqual("Second Quest", quest.Description);
+            Assert.AreEqual(1, quest.Items.Count);
+            Assert.AreEqual(1, quest.Items[0].Id);
+            Assert.AreEqual("Helm of Fire", quest.Items[0].Name);
+            Assert.AreEqual(5, quest.Stats.Count);
+            Assert.AreEqual(QuestType.Gather, quest.Type);
+            Assert.AreEqual(false, quest.Active);
+        }
+
+        [TestMethod]
+        public void AcceptGatherQuestTest()
+        {
+            IQuest quest = new QuestGather(1, "Welcome part 2", "Second Quest", itemReward, statReward, item_0, 5);
+            quest.AcceptQuest(hero);
+
+            Assert.AreEqual(1, hero.QuestList.Count);
+            Assert.AreEqual(true, quest.Active);
+            Assert.AreEqual(false, quest.IsComplete());
+            Assert.AreEqual($"Find iron: 0/5", quest.GetConditions());
+        }
+
+        [TestMethod]
+        public void UpdateGatherQuestTest()
+        {
+            IQuest quest = new QuestGather(1, "Welcome part 2", "Second Quest", itemReward, statReward, item_0, 5);
+            quest.AcceptQuest(hero);
+
+            Assert.AreEqual(true, quest.Active);
+            Assert.AreEqual(false, quest.IsComplete());
+
+            hero.Interact(item_0);
+            Assert.AreEqual($"Find iron: 1/5", quest.GetConditions());
+            hero.Interact(item_1);
+            Assert.AreEqual($"Find iron: 2/5", quest.GetConditions());
+            hero.Interact(item_2);
+            Assert.AreEqual($"Find iron: 3/5", quest.GetConditions());
+            hero.Interact(item_3);
+            Assert.AreEqual($"Find iron: 4/5", quest.GetConditions());
+
+            Assert.AreEqual(false, hero.CompleteQuest(quest));
+        }
+
+        [TestMethod]
+        public void CompleteGatherQuestTest()
+        {
+            IQuest quest = new QuestGather(1, "Welcome part 2", "Second Quest", itemReward, statReward, item_0, 5);
+            quest.AcceptQuest(hero);
+
+            Assert.AreEqual(true, quest.Active);
+            Assert.AreEqual(false, quest.IsComplete());
+
+            hero.Interact(item_0);
+            hero.Interact(item_1);
+            hero.Interact(item_2);
+            hero.Interact(item_3);
+            hero.Interact(item_4);
+
+            Assert.AreEqual($"Find iron: 5/5", quest.GetConditions());
+            Assert.AreEqual(hero.Inventory.Items.Count, 5);
+
+            Assert.AreEqual(true, hero.CompleteQuest(quest));
+
+            Assert.AreEqual(hero.Inventory.Items.Count, 6);
+            Assert.AreEqual(110f, ((RegenerationStat)hero.GetStat(StatType.Health)).MaxValue);
+            Assert.AreEqual(105f, ((RegenerationStat)hero.GetStat(StatType.Energy)).MaxValue);
+            Assert.AreEqual(105f, ((RegenerationStat)hero.GetStat(StatType.Stamina)).MaxValue);
+            Assert.AreEqual(32f, hero.GetStat(StatType.Intelligence).Value);
+            Assert.AreEqual(51f, hero.GetStat(StatType.Luck).Value);
+        }
+
+        #endregion
     }
 }

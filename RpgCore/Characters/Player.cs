@@ -38,6 +38,9 @@ namespace RpgCore
         public delegate void KillEnemyEvent(IFighter target);
         public static event KillEnemyEvent KillEnemy;
 
+        public delegate void PickItemEvent(IItem item);
+        public static event PickItemEvent PickItem;
+
         public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
             this.id = 0;
@@ -188,6 +191,7 @@ namespace RpgCore
 
         public void AddToInventory(IItem item)
         {
+            PickItem?.Invoke(item);
             Inventory.AddItem(item);
         }
 
@@ -200,9 +204,22 @@ namespace RpgCore
         {
             QuestList.Add(quest);
 
-            if(quest.Type == QuestType.Kill)
+            switch (quest.Type)
             {
-                KillEnemy += quest.UpdateQuest;
+                case QuestType.Kill:
+                    KillEnemy += quest.UpdateQuest;
+                    break;
+                case QuestType.Delivery:
+                    break;
+                case QuestType.Gather:
+                    PickItem += quest.UpdateQuest;
+                    break;
+                case QuestType.Escort:
+                    break;
+                case QuestType.Craft:
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -212,13 +229,32 @@ namespace RpgCore
 
             if (result)
             {
-                if (quest.Type == QuestType.Kill)
+
+                switch (quest.Type)
                 {
-                    KillEnemy -= quest.UpdateQuest;
+                    case QuestType.Kill:
+                        KillEnemy -= quest.UpdateQuest;
+                        break;
+                    case QuestType.Delivery:
+                        break;
+                    case QuestType.Gather:
+                        PickItem -= quest.UpdateQuest;
+                        break;
+                    case QuestType.Escort:
+                        break;
+                    case QuestType.Craft:
+                        break;
+                    default:
+                        break;
                 }
             }
 
             return result;
+        }
+
+        public List<IItem> GetInventory()
+        {
+            return Inventory.Items;
         }
     }
 }

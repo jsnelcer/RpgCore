@@ -76,5 +76,10 @@ namespace RpgCore.Crafting
         }
         
         public IItem Clone() => new Receipt(this);
+
+        public void Interact(ICharacter character)
+        {
+            character.AddToInventory(this);
+        }
     }
 }

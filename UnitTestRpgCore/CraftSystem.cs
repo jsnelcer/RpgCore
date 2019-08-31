@@ -15,6 +15,7 @@ namespace UnitTestRpgCore
     public class CraftSystem
     {
         Player hero;
+#warning add recept to inventory... after craft destroy it?
 
         [TestInitialize]
         public void Init()
