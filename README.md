@@ -8,8 +8,13 @@ Develop version (unusable)
 - Storage 
 - Character - Player (in progress)
 
-Next step
-- Comments
 - Craft/Receipt (extensions of Item ??)
 - Combat system
+
+In Proggress
+- Quests
+
+Next step
+- Combat system v2
+- Comments
 ....
