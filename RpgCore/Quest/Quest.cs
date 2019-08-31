@@ -6,22 +6,34 @@ using System.Text;
 
 namespace RpgCore.Quest
 {
-    public class Quest : IQuest
+    public abstract class Quest : IQuest
     {
         public QuestType Type { get; set; }
-
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
         public bool Active { get; set; }
-
         public List<IItem> Items { get; set; }
-
         public List<IStat> Stats { get; set; }
 
-        public bool IsComplete()
+        public Quest(QuestType type, int id, string title, string description, List<IItem> items, List<IStat> stats)
         {
-            return false;
+            Type = type;
+            Id = id;
+            Title = title;
+            Description = description;
+
+            Items = items;
+            Stats = stats;
+
+            Active = false;
         }
 
-        public void Reward(ICharacter character)
+        public abstract bool IsComplete();
+
+        public abstract string GetConditions();
+
+        public virtual void Reward(ICharacter character)
         {
             Items.ForEach (item => {
                 character.AddToInventory(item);
@@ -32,5 +44,6 @@ namespace RpgCore.Quest
                 character.UpgradeStat(stat);
             });
         }
+
     }
 }
