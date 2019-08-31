@@ -9,5 +9,6 @@ namespace RpgCore.Interface
 
         List<IInteractable> LookAround();
         void AddToInventory(IItem item);
+        void UpgradeStat(IStat stat);
     }
 }

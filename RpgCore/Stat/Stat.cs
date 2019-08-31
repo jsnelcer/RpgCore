@@ -70,5 +70,10 @@ namespace RpgCore.Stats
         {
             modifiers.Add(effect);
         }
+
+        public void UpgradeStat(float value)
+        {
+            value += value;
+        }
     }
 }

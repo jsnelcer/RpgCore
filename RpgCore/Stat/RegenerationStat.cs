@@ -31,7 +31,6 @@ namespace RpgCore.Stats
 
         public RegenerationStat(float maxValue, StatType type)
         {
-
             this.modifiers = new List<IEffect>();
             this.maxValue = maxValue;
             this.value = maxValue;
@@ -80,6 +79,11 @@ namespace RpgCore.Stats
         public void RemoveEquipEffects()
         {
             modifiers.RemoveAll(x => x.GetType() == typeof(EquipEffect));
+        }
+
+        public void UpgradeStat(float value)
+        {
+            maxValue += value;
         }
     }
 }

@@ -163,5 +163,10 @@ namespace RpgCore
         {
             Inventory.AddItem(item);
         }
+
+        public void UpgradeStat(IStat stat)
+        {
+            StatsManager.UpgradeStat(stat);
+        }
     }
 }
