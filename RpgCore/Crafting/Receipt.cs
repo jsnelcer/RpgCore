@@ -81,5 +81,10 @@ namespace RpgCore.Crafting
         {
             character.AddToInventory(this);
         }
+
+        public override string ToString()
+        {
+            return $"{Name}: {Description}";
+        }
     }
 }

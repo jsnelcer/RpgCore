@@ -124,15 +124,17 @@ namespace UnitTestRpgCore
             hero.Interact(new Resources(13, "coal", "resource item"));
             hero.Interact(new Resources(13, "coal", "resource item"));
 
+            // pick recept
+            hero.Interact(recept);
             hero.Craft(recept);
-            Assert.AreEqual(4, hero.Inventory.Items.Count);
+            Assert.AreEqual(5, hero.Inventory.Items.Count);
 
             Assert.AreEqual(2, hero.Inventory.Items.Where(item => item.Id == 12).Count());
             Assert.AreEqual(1, hero.Inventory.Items.Where(item => item.Id == 11).Count());
             Assert.AreEqual(0, hero.Inventory.Items.Where(item => item.Id == 13).Count());
 
-            IItem newItem = hero.Inventory.Items.Where(item => item.GetType() != typeof(Resources)).FirstOrDefault();
-            Assert.AreEqual(111, newItem.Id);
+            IItem newItem = hero.Inventory.Items.Find(x => x.Id == 111);
+            Assert.AreEqual(true, hero.Inventory.Exist(recept.Result));
             Assert.AreEqual("sword of destiny", newItem.Name);
             Assert.AreEqual("ultimate weapon", newItem.Description);
             Assert.AreEqual(EquipSlot.RightHand, ((Equipment)newItem).Slot);

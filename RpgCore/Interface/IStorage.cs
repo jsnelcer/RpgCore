@@ -6,6 +6,8 @@ namespace RpgCore.Interface
     {
         void AddItem(T item);
         void RemoveItem(T item);
+
+        bool Exist(T item);
         
         List<T> Items { get; }
     }

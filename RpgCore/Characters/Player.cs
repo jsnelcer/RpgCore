@@ -31,7 +31,9 @@ namespace RpgCore
         
         private StatsManager StatsManager;
         public List<IQuest> QuestList;
-        
+
+        #region Events
+
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
 
@@ -40,6 +42,11 @@ namespace RpgCore
 
         public delegate void PickItemEvent(IItem item);
         public static event PickItemEvent PickItem;
+
+        public delegate void CraftItemEvent(IItem item);
+        public static event CraftItemEvent CraftItem;
+
+        #endregion
 
         public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
@@ -118,9 +125,10 @@ namespace RpgCore
 
         public void Craft(Receipt receipt)
         {
-            if(receipt.CanCraft(this.Inventory))
+            if(receipt.CanCraft(this.Inventory) && this.Inventory.Exist(receipt))
             {
                 Inventory.AddItem(receipt.Craft(this.Inventory));
+                CraftItem?.Invoke(receipt);
             }
         }
 
@@ -224,6 +232,7 @@ namespace RpgCore
                 case QuestType.Escort:
                     break;
                 case QuestType.Craft:
+                    CraftItem += quest.UpdateQuest;
                     break;
                 default:
                     break;
@@ -249,6 +258,7 @@ namespace RpgCore
                     case QuestType.Escort:
                         break;
                     case QuestType.Craft:
+                        CraftItem -= quest.UpdateQuest;
                         break;
                     default:
                         break;
