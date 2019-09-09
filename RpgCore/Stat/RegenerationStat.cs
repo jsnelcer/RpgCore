@@ -85,5 +85,10 @@ namespace RpgCore.Stats
         {
             maxValue += value;
         }
+
+        public override string ToString()
+        {
+            return $"{Type}: {Value}/{MaxValue}";
+        }
     }
 }

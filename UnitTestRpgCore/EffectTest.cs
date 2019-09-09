@@ -13,7 +13,7 @@ namespace UnitTestRpgCore
     [TestClass]
     public class EffectTest
     {
-        Player hero;
+        Hero hero;
 
         [TestInitialize]
         public void Init()
@@ -27,7 +27,7 @@ namespace UnitTestRpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            hero = new Hero("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
         }
 

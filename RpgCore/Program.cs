@@ -32,7 +32,7 @@ namespace RpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            Player hero = new Player("Kazisvet III.", "z Bozi vule král", player_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            Hero hero = new Hero("Kazisvet III.", "z Bozi vule král", player_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
             Enemy npc = new Enemy("Orc", "ver. 3.3", orc_stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
 

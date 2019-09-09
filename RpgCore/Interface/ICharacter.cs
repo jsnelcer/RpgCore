@@ -9,7 +9,9 @@ namespace RpgCore.Interface
 
         List<IInteractable> LookAround();
         List<IItem> GetInventory();
-        
+        List<IStat> GetStats();
+        List<IQuest> GetQuests();
+
         void AddToInventory(IItem item);
         void UpgradeStat(IStat stat);
 

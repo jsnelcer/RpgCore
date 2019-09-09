@@ -66,5 +66,10 @@ namespace RpgCore.Quest
                 return false;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{Title}: {Description}";
+        }
     }
 }

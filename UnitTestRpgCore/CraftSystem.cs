@@ -14,7 +14,7 @@ namespace UnitTestRpgCore
     [TestClass]
     public class CraftSystem
     {
-        Player hero;
+        Hero hero;
 #warning add recept to inventory... after craft destroy it?
 
         [TestInitialize]
@@ -29,7 +29,7 @@ namespace UnitTestRpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            hero = new Hero("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
         }
 
         [TestMethod]

@@ -190,5 +190,15 @@ namespace RpgCore
         {
             return Inventory.Items;
         }
+
+        public List<IStat> GetStats()
+        {
+            return StatsManager.Stats;
+        }
+
+        public List<IQuest> GetQuests()
+        {
+            return null;
+        }
     }
 }

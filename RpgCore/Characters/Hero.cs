@@ -11,7 +11,7 @@ using RpgCore.Quest;
 
 namespace RpgCore
 {
-    public class Player : IFighter
+    public class Hero : IFighter
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -48,7 +48,7 @@ namespace RpgCore
 
         #endregion
 
-        public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
+        public Hero(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
             this.id = 0;
             this.name = name;
@@ -218,7 +218,6 @@ namespace RpgCore
         public void AddQuest(IQuest quest)
         {
             QuestList.Add(quest);
-
             switch (quest.Type)
             {
                 case QuestType.Kill:
@@ -271,6 +270,16 @@ namespace RpgCore
         public List<IItem> GetInventory()
         {
             return Inventory.Items;
+        }
+
+        public List<IStat> GetStats()
+        {
+            return StatsManager.Stats;
+        }
+
+        public List<IQuest> GetQuests()
+        {
+            return QuestList;
         }
     }
 }

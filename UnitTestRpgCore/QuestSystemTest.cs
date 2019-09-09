@@ -15,7 +15,7 @@ namespace UnitTestRpgCore
     [TestClass]
     public class QuestSystemTest
     {
-        Player hero;
+        Hero hero;
 
         IEnemy enemy_0;
         IEnemy enemy_1;
@@ -73,7 +73,7 @@ namespace UnitTestRpgCore
             item_4 = new Resources(11, "iron", "resource item");
             #endregion
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            hero = new Hero("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
 
 
             #region Receipt

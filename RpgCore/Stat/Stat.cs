@@ -75,5 +75,10 @@ namespace RpgCore.Stats
         {
             this.value += value;
         }
+
+        public override string ToString()
+        {
+            return $"{Type}: {value}/{Value}";
+        }
     }
 }
