@@ -18,17 +18,23 @@ namespace RpgCore.StateMachine
 
         public void Enter()
         {
+#if Debug
             Console.WriteLine(owner.Name + " dies");
+#endif
         }
 
         public void Execute()
         {
+#if Debug
             Console.WriteLine(owner.Name + ": I am Death ");
+#endif
         }
 
         public void Exit()
         {
+#if Debug
             Console.WriteLine(owner.Name + ": Resurrected ");
+#endif
         }
     }
 }

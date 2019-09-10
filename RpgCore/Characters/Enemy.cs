@@ -137,16 +137,21 @@ namespace RpgCore
 
         public void Hit(List<IEffect> attack)
         {
-            attack.ForEach(e => this.AddEffect(e));
-            Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
-            if (GetStat(StatType.Health).Value <= 0 && CurrentState.Type != StateType.Death)
+            if (CurrentState.Type != StateType.Death)
             {
-                StateMachine.ChangeState(new Death(this));
+                attack.ForEach(e => this.AddEffect(e));
+#if Debug
+                Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
+#endif
+                if (GetStat(StatType.Health).Value <= 0)
+                {
+                    StateMachine.ChangeState(new Death(this));
+                }
             }
         }
         public void Move()
         {
-            #warning rly need this?
+#warning rly need this?
         }
 
         public bool Alive()
@@ -172,18 +177,28 @@ namespace RpgCore
 
         public void AddQuest(IQuest quest)
         {
-            #warning rly need this?
+#warning rly need this?
         }
 
         public bool CompleteQuest(IQuest quest)
         {
-            #warning rly need this?
+#warning rly need this?
             return false;
         }
 
         public List<IItem> GetInventory()
         {
             return Inventory.Items;
+        }
+
+        public List<IStat> GetStats()
+        {
+            return StatsManager.Stats;
+        }
+
+        public List<IQuest> GetQuests()
+        {
+            return null;
         }
     }
 }

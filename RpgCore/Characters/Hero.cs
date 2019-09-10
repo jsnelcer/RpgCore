@@ -11,7 +11,7 @@ using RpgCore.Quest;
 
 namespace RpgCore
 {
-    public class Player : IFighter
+    public class Hero : IFighter
     {
         private int id { get; set; }
         private string description { get; set; }
@@ -31,7 +31,9 @@ namespace RpgCore
         
         private StatsManager StatsManager;
         public List<IQuest> QuestList;
-        
+
+        #region Events
+
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
 
@@ -41,7 +43,12 @@ namespace RpgCore
         public delegate void PickItemEvent(IItem item);
         public static event PickItemEvent PickItem;
 
-        public Player(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
+        public delegate void CraftItemEvent(IItem item);
+        public static event CraftItemEvent CraftItem;
+
+        #endregion
+
+        public Hero(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
             this.id = 0;
             this.name = name;
@@ -118,9 +125,10 @@ namespace RpgCore
 
         public void Craft(Receipt receipt)
         {
-            if(receipt.CanCraft(this.Inventory))
+            if(receipt.CanCraft(this.Inventory) && this.Inventory.Exist(receipt))
             {
                 Inventory.AddItem(receipt.Craft(this.Inventory));
+                CraftItem?.Invoke(receipt);
             }
         }
 
@@ -157,11 +165,18 @@ namespace RpgCore
         
         public void Hit(List<IEffect> attack)
         {
-            attack.ForEach(e => this.AddEffect(e));
-            Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
-            if (GetStat(StatType.Health).Value <= 0 && CurrentState.Type != StateType.Death)
+            if (CurrentState.Type != StateType.Death)
             {
-                StateMachine.ChangeState(new Death(this));
+                attack.ForEach(e => this.AddEffect(e));
+
+#if Debug
+                Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
+#endif
+
+                if (GetStat(StatType.Health).Value <= 0)
+                {
+                    StateMachine.ChangeState(new Death(this));
+                }
             }
         }
 
@@ -203,7 +218,6 @@ namespace RpgCore
         public void AddQuest(IQuest quest)
         {
             QuestList.Add(quest);
-
             switch (quest.Type)
             {
                 case QuestType.Kill:
@@ -217,6 +231,7 @@ namespace RpgCore
                 case QuestType.Escort:
                     break;
                 case QuestType.Craft:
+                    CraftItem += quest.UpdateQuest;
                     break;
                 default:
                     break;
@@ -229,7 +244,6 @@ namespace RpgCore
 
             if (result)
             {
-
                 switch (quest.Type)
                 {
                     case QuestType.Kill:
@@ -243,6 +257,7 @@ namespace RpgCore
                     case QuestType.Escort:
                         break;
                     case QuestType.Craft:
+                        CraftItem -= quest.UpdateQuest;
                         break;
                     default:
                         break;
@@ -255,6 +270,16 @@ namespace RpgCore
         public List<IItem> GetInventory()
         {
             return Inventory.Items;
+        }
+
+        public List<IStat> GetStats()
+        {
+            return StatsManager.Stats;
+        }
+
+        public List<IQuest> GetQuests()
+        {
+            return QuestList;
         }
     }
 }

@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27428.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpgCore", "RpgCore\RpgCore.csproj", "{B4779664-956D-4D1B-8B0B-AD3DD85F82EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestRpgCore", "UnitTestRpgCore\UnitTestRpgCore.csproj", "{B564814E-C276-45FC-AF9C-0C68544BCA1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestRpgCore", "UnitTestRpgCore\UnitTestRpgCore.csproj", "{B564814E-C276-45FC-AF9C-0C68544BCA1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

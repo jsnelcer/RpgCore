@@ -19,7 +19,9 @@ namespace RpgCore.StateMachine
 
         public void Enter()
         {
+#if Debug
             Console.WriteLine(owner.Name + ": idle start");
+#endif
         }
 
         public void Execute()
@@ -32,13 +34,17 @@ namespace RpgCore.StateMachine
             }
             else
             {
+#if Debug
                 Console.WriteLine(owner.Name + " see nothing");
+#endif
             }
         }
 
         public void Exit()
         {
+#if Debug
             Console.WriteLine(owner.Name + ": idle end");
+#endif
         }
     }
 }

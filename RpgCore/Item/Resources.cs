@@ -40,5 +40,10 @@ namespace RpgCore.Items
         {
             character.AddToInventory(this);
         }
+
+        public override string ToString()
+        {
+            return $"{this.Name}: {this.Description}";
+        }
     }
 }

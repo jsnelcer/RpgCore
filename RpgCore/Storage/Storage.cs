@@ -39,5 +39,10 @@ namespace RpgCore.Storaged
                 throw new Exception("item not found");
             }
         }
+
+        public bool Exist(T item)
+        {
+            return items.Any(x => x.ToString() == item.ToString());
+        }
     }
 }

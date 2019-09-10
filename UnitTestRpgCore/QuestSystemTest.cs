@@ -15,7 +15,7 @@ namespace UnitTestRpgCore
     [TestClass]
     public class QuestSystemTest
     {
-        Player hero;
+        Hero hero;
 
         IEnemy enemy_0;
         IEnemy enemy_1;
@@ -29,12 +29,15 @@ namespace UnitTestRpgCore
         IItem item_3;
         IItem item_4;
 
+        Receipt recept;
+
         List<IItem> itemReward;
         List<IStat> statReward;
 
         [TestInitialize]
         public void Init()
         {
+
             List<IStat> stats = new List<IStat>
             {
                 new RegenerationStat(100f, StatType.Health),
@@ -70,7 +73,28 @@ namespace UnitTestRpgCore
             item_4 = new Resources(11, "iron", "resource item");
             #endregion
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            hero = new Hero("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+
+
+            #region Receipt
+
+            Resources iron = new Resources(11, "iron", "resource item");
+            Resources wood = new Resources(12, "wood", "resource item");
+            Resources coal = new Resources(13, "coal", "resource item");
+
+
+            Dictionary<IItem, int> materials = new Dictionary<IItem, int>
+            {
+                {iron, 3 },
+                {wood, 2 },
+                {coal, 4 }
+            };
+            Equipment receipt_weapon = new Equipment(111, "sword of destiny", "ultimate weapon", EquipSlot.RightHand);
+
+            receipt_weapon.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.Luck, +20f));
+            recept = new Receipt(receipt_weapon, materials, 333, "Sword of Destiny Receipt", "Receipt for ultimate weapon");
+
+            #endregion
 
             Equipment helm = new Equipment(1, "Helm of Fire", "+10 fire dmg", EquipSlot.Head);
             helm.AddEquipEffect(new EquipEffect(EffectTarget.Character, StatType.MagicDmg, +10));
@@ -260,6 +284,75 @@ namespace UnitTestRpgCore
             Assert.AreEqual(105f, ((RegenerationStat)hero.GetStat(StatType.Stamina)).MaxValue);
             Assert.AreEqual(32f, hero.GetStat(StatType.Intelligence).Value);
             Assert.AreEqual(51f, hero.GetStat(StatType.Luck).Value);
+        }
+
+        #endregion
+
+        #region Quest Craft
+
+        [TestMethod]
+        public void CreateCraftQuestTest()
+        {
+            IQuest quest = new QuestCraft(1, "Welcome part 3", "Craft Quest", itemReward, statReward, recept.Result, 1);
+
+            Assert.AreEqual(1, quest.Id);
+
+            Assert.AreEqual("Welcome part 3", quest.Title);
+            Assert.AreEqual("Craft Quest", quest.Description);
+            Assert.AreEqual(1, quest.Items.Count);
+            Assert.AreEqual(1, quest.Items[0].Id);
+            Assert.AreEqual("Helm of Fire", quest.Items[0].Name);
+            Assert.AreEqual(5, quest.Stats.Count);
+            Assert.AreEqual(QuestType.Craft, quest.Type);
+            Assert.AreEqual(false, quest.Active);
+        }
+
+        [TestMethod]
+        public void AcceptCraftQuestTest()
+        {
+            IQuest quest = new QuestCraft(1, "Welcome part 3", "Craft Quest", itemReward, statReward, recept.Result, 1);
+
+            quest.AcceptQuest(hero);
+
+            Assert.AreEqual(1, hero.QuestList.Count);
+            Assert.AreEqual(true, quest.Active);
+            Assert.AreEqual(false, quest.IsComplete());
+            Assert.AreEqual($"Craft {recept.Result.Name}: 0/1", quest.GetConditions());
+        }
+
+        [TestMethod]
+        public void UpdateAndCompleteCraftQuestTest()
+        {
+            IQuest quest = new QuestCraft(1, "Welcome part 3", "Craft Quest", itemReward, statReward, recept.Result, 1);
+            quest.AcceptQuest(hero);
+
+            Assert.AreEqual(true, quest.Active);
+            Assert.AreEqual(false, quest.IsComplete());
+
+            hero.Interact(recept);
+
+            #region Gathering
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+            hero.Interact(new Resources(11, "iron", "resource item"));
+
+            hero.Interact(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
+            hero.Interact(new Resources(12, "wood", "resource item"));
+
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            hero.Interact(new Resources(13, "coal", "resource item"));
+            #endregion
+
+            hero.Craft(recept);
+
+            Assert.AreEqual($"Craft {recept.Result.Name}: 1/1", quest.GetConditions());
+
+            Assert.AreEqual(true, hero.CompleteQuest(quest));
         }
 
         #endregion

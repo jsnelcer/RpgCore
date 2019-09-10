@@ -14,7 +14,7 @@ namespace UnitTestRpgCore
     [TestClass]
     public class CraftSystem
     {
-        Player hero;
+        Hero hero;
 #warning add recept to inventory... after craft destroy it?
 
         [TestInitialize]
@@ -29,7 +29,7 @@ namespace UnitTestRpgCore
                 new Stat(50f, StatType.Luck)
             };
 
-            hero = new Player("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
+            hero = new Hero("Kazisvet III.", "z Bozi vule král", stats, new Storage<IItem>(), new Storage<ConsumableItem>(), new Storage<IEquiped>());
         }
 
         [TestMethod]
@@ -124,15 +124,17 @@ namespace UnitTestRpgCore
             hero.Interact(new Resources(13, "coal", "resource item"));
             hero.Interact(new Resources(13, "coal", "resource item"));
 
+            // pick recept
+            hero.Interact(recept);
             hero.Craft(recept);
-            Assert.AreEqual(4, hero.Inventory.Items.Count);
+            Assert.AreEqual(5, hero.Inventory.Items.Count);
 
             Assert.AreEqual(2, hero.Inventory.Items.Where(item => item.Id == 12).Count());
             Assert.AreEqual(1, hero.Inventory.Items.Where(item => item.Id == 11).Count());
             Assert.AreEqual(0, hero.Inventory.Items.Where(item => item.Id == 13).Count());
 
-            IItem newItem = hero.Inventory.Items.Where(item => item.GetType() != typeof(Resources)).FirstOrDefault();
-            Assert.AreEqual(111, newItem.Id);
+            IItem newItem = hero.Inventory.Items.Find(x => x.Id == 111);
+            Assert.AreEqual(true, hero.Inventory.Exist(recept.Result));
             Assert.AreEqual("sword of destiny", newItem.Name);
             Assert.AreEqual("ultimate weapon", newItem.Description);
             Assert.AreEqual(EquipSlot.RightHand, ((Equipment)newItem).Slot);
