@@ -8,14 +8,9 @@ namespace RpgCore.Items
 {
     public class Equipment : IEquiped
     {
-        private int id { get; set; }
-        private string description { get; set; }
-        private string name { get; set; }
-        
-
-        public int Id => id;
-        public string Name => name;
-        public string Description => description;
+        public int Id { get; private set; }
+        public string Description { get; private set; }
+        public string Name { get; private set; }
 
         public bool Equiped { get; set; }
         public EquipSlot Slot { get; private set; }
@@ -23,10 +18,10 @@ namespace RpgCore.Items
 
         public Equipment(int _id, string _name, string _description, EquipSlot _slot)
         {
-            this.id = _id;
-            this.name = _name;
-            this.description = _description;
-            this.Slot = _slot;
+            Id = _id;
+            Name = _name;
+            Description = _description;
+            Slot = _slot;
             EquipEffects = new List<IEffect>();
             Equiped = false;
         }
@@ -34,12 +29,12 @@ namespace RpgCore.Items
 
         protected Equipment(Equipment anotherEquip)
         {
-            this.id = anotherEquip.Id;
-            this.name = anotherEquip.Name;
-            this.description = anotherEquip.Description;
-            this.Slot = anotherEquip.Slot;
-            this.EquipEffects = new List<IEffect>(anotherEquip.EquipEffects);
-            this.Equiped = anotherEquip.Equiped;
+            Id = anotherEquip.Id;
+            Name = anotherEquip.Name;
+            Description = anotherEquip.Description;
+            Slot = anotherEquip.Slot;
+            EquipEffects = new List<IEffect>(anotherEquip.EquipEffects);
+            Equiped = anotherEquip.Equiped;
         }
 
         public void AddEquipEffect(IEffect effect)
@@ -73,7 +68,7 @@ namespace RpgCore.Items
 
         public override string ToString()
         {
-            return $"{this.Name}: {this.Description}";
+            return $"{Name}: {Description}";
         }
     }
 }

@@ -17,5 +17,6 @@ namespace RpgCore.Interface
 
         void AddQuest(IQuest quest);
         bool CompleteQuest(IQuest quest);
+        bool Alive();
     }
 }

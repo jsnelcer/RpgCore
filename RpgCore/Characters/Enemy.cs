@@ -11,38 +11,34 @@ namespace RpgCore
 {
     public class Enemy : IEnemy
     {
-        public string Name => this.name;
-        public string Description => this.description;
-        public int Id => id;
-
         public StateMachineSystem StateMachine { get; private set; }
 
         public IState CurrentState => StateMachine.CurrentState;
-        private int id { get; set; }
-        private string description { get; set; }
-        private string name { get; set; }
+        public int Id { get; private set; }
+        public string Description { get; private set; }
+        public string Name { get; private set; }
 
 
         public IStorage<IItem> Inventory { get; private set; }
         public IStorage<ConsumableItem> QuickUse { get; private set; }
         public IStorage<IEquiped> Equip { get; private set; }
 
-        private StatsManager StatsManager;
+        private readonly StatsManager StatsManager;
 
         public delegate void EquipChangeEvent();
         public static event EquipChangeEvent EquipChange;
 
         public Enemy(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
-            this.id = 0;
-            this.name = name;
-            this.description = description;
+            Id = 0;
+            Name = name;
+            Description = description;
 
             StatsManager = new StatsManager(baseStats);
 
-            this.Inventory = inventory;
-            this.QuickUse = quickUse;
-            this.Equip = equip;
+            Inventory = inventory;
+            QuickUse = quickUse;
+            Equip = equip;
 
             EquipChange += UpdateStatsFromEquip;
 
@@ -57,7 +53,7 @@ namespace RpgCore
 
         public override string ToString()
         {
-            return this.Name + ": " + this.Description;
+            return Name + ": " + Description;
         }
 
         public List<IEntity> LookAround()
@@ -83,10 +79,7 @@ namespace RpgCore
                 }
                 Equip.AddItem(item);
                 item.Equiped = true;
-                if (EquipChange != null)
-                {
-                    EquipChange.Invoke();
-                }
+                EquipChange?.Invoke();
             }
             catch (Exception e)
             {
@@ -112,7 +105,7 @@ namespace RpgCore
             if (target.Alive())
             {
                 List<IEffect> dmg = new List<IEffect>();
-                IEquiped weapon = this.GetItemFromSlot(EquipSlot.RightHand);
+                IEquiped weapon = GetItemFromSlot(EquipSlot.RightHand);
                 if (weapon != null)
                 {
                     weapon.EquipEffects.ForEach(x =>
@@ -139,9 +132,9 @@ namespace RpgCore
         {
             if (CurrentState.Type != StateType.Death)
             {
-                attack.ForEach(e => this.AddEffect(e));
-#if Debug
-                Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
+                attack.ForEach(e => AddEffect(e));
+#if DEBUG
+                Console.WriteLine(Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
 #endif
                 if (GetStat(StatType.Health).Value <= 0)
                 {

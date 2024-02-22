@@ -7,8 +7,8 @@ namespace RpgCore.StateMachine
     public class Attack : IState
     {
         public StateType Type { get; private set; }
-        IFighter owner;
-        IFighter target;
+        readonly IFighter owner;
+        readonly IFighter target;
 
         public Attack(IFighter actor, IFighter victim)
         {
@@ -19,7 +19,7 @@ namespace RpgCore.StateMachine
 
         public void Enter()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine("Charge!");
 #endif
         }
@@ -31,7 +31,7 @@ namespace RpgCore.StateMachine
 
         public void Exit()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine("End Attack");
 #endif
         }

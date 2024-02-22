@@ -8,6 +8,5 @@ namespace RpgCore.Interface
     {
         void Attack(IFighter target);
         void Hit(List<IEffect> dmg);
-        bool Alive();
     }
 }

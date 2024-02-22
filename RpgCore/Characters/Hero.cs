@@ -13,23 +13,18 @@ namespace RpgCore
 {
     public class Hero : IFighter
     {
-        private int id { get; set; }
-        private string description { get; set; }
-        private string name { get; set; }
-
         public StateMachineSystem StateMachine { get; private set; }
 
         public IState CurrentState => StateMachine.CurrentState;
-
-        public int Id => id;
-        public string Name => name;
-        public string Description => description;
+        public int Id { get; private set; }
+        public string Description { get; private set; }
+        public string Name { get; private set; }
 
         public IStorage<IItem> Inventory { get; private set; }
         public IStorage<ConsumableItem> QuickUse { get; private set; }
         public IStorage<IEquiped> Equip { get; private set; }
         
-        private StatsManager StatsManager;
+        private readonly StatsManager StatsManager;
         public List<IQuest> QuestList;
 
         #region Events
@@ -50,9 +45,9 @@ namespace RpgCore
 
         public Hero(string name, string description, List<IStat> baseStats, IStorage<IItem> inventory, IStorage<ConsumableItem> quickUse, IStorage<IEquiped> equip)
         {
-            this.id = 0;
-            this.name = name;
-            this.description = description;
+            Id = 0;
+            Name = name;
+            Description = description;
 
             StatsManager = new StatsManager(baseStats);
             QuestList = new List<IQuest>();
@@ -60,9 +55,9 @@ namespace RpgCore
             StateMachine = new StateMachineSystem();
             StateMachine.ChangeState(new Idle(this));
 
-            this.Inventory = inventory;
-            this.QuickUse = quickUse;
-            this.Equip = equip;
+            Inventory = inventory;
+            QuickUse = quickUse;
+            Equip = equip;
 
             EquipChange += UpdateStatsFromEquip;
         }
@@ -87,10 +82,7 @@ namespace RpgCore
                 }
                 Equip.AddItem(item);
                 item.Equiped = true;
-                if (EquipChange != null)
-                {
-                    EquipChange.Invoke();
-                }
+                EquipChange?.Invoke();
             }
             catch (Exception e)
             {
@@ -125,9 +117,9 @@ namespace RpgCore
 
         public void Craft(Receipt receipt)
         {
-            if(receipt.CanCraft(this.Inventory) && this.Inventory.Exist(receipt))
+            if(receipt.CanCraft(Inventory) && Inventory.Exist(receipt))
             {
-                Inventory.AddItem(receipt.Craft(this.Inventory));
+                Inventory.AddItem(receipt.Craft(Inventory));
                 CraftItem?.Invoke(receipt);
             }
         }
@@ -137,7 +129,7 @@ namespace RpgCore
             if (target.Alive())
             {
                 List<IEffect> dmg = new List<IEffect>();
-                IEquiped weapon = this.GetItemFromSlot(EquipSlot.RightHand);
+                IEquiped weapon = GetItemFromSlot(EquipSlot.RightHand);
                 if (weapon != null)
                 {
                     weapon.EquipEffects.ForEach(x =>
@@ -147,6 +139,7 @@ namespace RpgCore
                 }
                 else
                 {
+                    // TODO: make base dmg value as property
                     dmg.Add(new InstantEffect(EffectTarget.Character, StatType.Health, -20));
                 }
 
@@ -167,9 +160,9 @@ namespace RpgCore
         {
             if (CurrentState.Type != StateType.Death)
             {
-                attack.ForEach(e => this.AddEffect(e));
+                attack.ForEach(e => AddEffect(e));
 
-#if Debug
+#if DEBUG
                 Console.WriteLine(this.Name + ": " + GetStat(StatType.Health).Value + "/" + ((RegenerationStat)GetStat(StatType.Health)).MaxValue);
 #endif
 
@@ -190,7 +183,7 @@ namespace RpgCore
 
         private IEquiped GetItemFromSlot(EquipSlot slot)
         {
-            return Equip.Items.Where(x=>x.Slot == slot).FirstOrDefault();
+            return Equip.Items.Where(x => x.Slot == slot).FirstOrDefault();
         }
 
         public bool Alive()

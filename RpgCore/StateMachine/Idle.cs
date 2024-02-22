@@ -9,7 +9,7 @@ namespace RpgCore.StateMachine
     public class Idle : IState
     {
         public StateType Type { get; private set; }
-        ICharacter owner;
+        readonly ICharacter owner;
 
         public Idle(ICharacter actor)
         {
@@ -19,7 +19,7 @@ namespace RpgCore.StateMachine
 
         public void Enter()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine(owner.Name + ": idle start");
 #endif
         }
@@ -34,7 +34,7 @@ namespace RpgCore.StateMachine
             }
             else
             {
-#if Debug
+#if DEBUG
                 Console.WriteLine(owner.Name + " see nothing");
 #endif
             }
@@ -42,7 +42,7 @@ namespace RpgCore.StateMachine
 
         public void Exit()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine(owner.Name + ": idle end");
 #endif
         }

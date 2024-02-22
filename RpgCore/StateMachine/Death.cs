@@ -8,7 +8,7 @@ namespace RpgCore.StateMachine
     {
         public StateType Type { get; private set; }
 
-        ICharacter owner;
+        readonly ICharacter owner;
 
         public Death(ICharacter actor)
         {
@@ -18,21 +18,21 @@ namespace RpgCore.StateMachine
 
         public void Enter()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine(owner.Name + " dies");
 #endif
         }
 
         public void Execute()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine(owner.Name + ": I am Death ");
 #endif
         }
 
         public void Exit()
         {
-#if Debug
+#if DEBUG
             Console.WriteLine(owner.Name + ": Resurrected ");
 #endif
         }
