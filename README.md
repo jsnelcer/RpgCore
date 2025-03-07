@@ -1,4 +1,8 @@
 # RpgCore
+
+## Obsolete repository
+
+---
 Rpg Core
 Develop version (unusable)
 - Stats
